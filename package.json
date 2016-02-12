@@ -1,0 +1,25 @@
+{
+  "name": "ranvier-procgen",
+  "version": "0.0.1",
+  "description": "A tool to procedurally generate YAML files for RanvierMUD entities.",
+  "main": "index.js",
+  "dependencies": {
+    "inquirer": "^0.12.0",
+    "js-yaml": "^3.5.3",
+    "rot-js": "^0.6.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha ."
+  },
+  "keywords": [
+    "procedural",
+    "generation",
+    "mud",
+    "rpg",
+    "yaml",
+    "node"
+  ],
+  "author": "Sean O'Donohue",
+  "license": "ISC"
+}
