@@ -1,6 +1,13 @@
 module.exports.positiveInt = _positiveInt;
 module.exports.title = _title;
+module.exports.between = _between;
 
+function _between(min, max) {
+  return function(n) {
+    if (isNaN(n)) return "Please provide a number";
+    return (n >= min && n <= max) ? true : "Please provide a number between " + min + " and " + max + ".";
+  }
+}
 
 function _positiveInt(n) {
   n = Number(n);

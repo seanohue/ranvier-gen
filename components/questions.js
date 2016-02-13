@@ -59,6 +59,14 @@ var describeRoom = {
   filter: filters.stringify
 };
 
+var amountOfExits = {
+	name: 'numExits',
+	message: 'How many exits will this room have? Maximum of 6.',
+	default: 1,
+	validate: validators.between(1, 6),
+	filter: Number
+};
+
 module.exports = {
   howManyRooms: howManyRooms,
   startingLocation: startingLocation,
@@ -66,5 +74,6 @@ module.exports = {
   describeRoom: describeRoom,
   areaName: areaName,
   areaLevelMax: areaLevelMax,
-  areaLevelMin: areaLevelMin
+  areaLevelMin: areaLevelMin,
+  amountOfExits: amountOfExits
 };

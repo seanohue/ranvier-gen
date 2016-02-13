@@ -11,11 +11,12 @@ const templates = require(moduleDir + 'templates.js');
 const questions = require(moduleDir + 'questions.js');
 
 var areaManifest, area;
-var roomsCreated;
+var roomsCreated = [];
 
 init();
 
 function init() {
+  console.log('\033[2J');
   inquirer.prompt(
     [
       questions.howManyRooms,
@@ -37,9 +38,7 @@ function createArea(answers) {
 
 function createRooms(start, end) {
 
-  if (start === end) {
-    return;
-  }
+  if (start === end) return;
 
   var roomQuestions = [
     questions.titleRoom,
@@ -53,10 +52,10 @@ function createRooms(start, end) {
 
   function createRoom(answers) {
     var vnum = start++;
-    var exits = createExits(numExits);
+    var exits = createExits(answers.numExits);
 
     roomsCreated.push(
-      templates.Room(
+      new templates.Room(
         filters.en(answers.title),
         vnum,
         filters.en(answers.desc),
@@ -67,17 +66,42 @@ function createRooms(start, end) {
     createRooms(start, end);
   }
 
-  function createExits(amount) {
-    // Do a barrel roll.
-  }
+  function createExits(amount, current) {
+    current = current || 1;
+    if (amount === current) return;
+    var exitsCreated = [];
+    var exitQuestions = [
+      questions.exitDestination,
+      questions.exitLabel,
+      questions.leaveMessage
+    ];
 
+    inquirer.prompt(
+      exitQuestions,
+      createExit);
+
+    function createExit(answers) {
+      var exit = {
+        location: answers.destination,
+        direction: answers.label,
+        leaveMessage: answers.leaveMessage
+      };
+
+      exit.leaveMessage ?
+        exit.leaveMessage = en(exit.leaveMessage) : delete exit.leaveMessage;
+
+      exitsCreated.push(
+
+      );
+    }
+  }
 }
 
 function saveArea(name, levels) {
   area = name;
   areaManifest = new templates.AreaManifest(
-    answers.areaName,
-    suggestedLevels
+    name,
+    levels
   );
   //TODO: write to filesystem here
 }
