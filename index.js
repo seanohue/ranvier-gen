@@ -25,26 +25,15 @@ function init() {
 function beginRoomCreation(answers) {
   var endingLocation = answers.start + answers.amount;
   var roomQuestions = [
-    questions.titleRoom
+    questions.titleRoom,
+    questions.describeRoom
   ];
 
   inquirer.prompt(
-    compileQuestions(
+    questions.compile(
       roomQuestions,
       answers.amount),
     function(a) {
       console.log(a);
     });
-
-  function compileQuestions(baseQuestions, amount) {
-    var i;
-    var compiledQuestions = [];
-
-    for (i = 0; i < amount; i++) {
-      for (question of baseQuestions) {
-        compiledQuestions.push(question);
-      }
-    }
-    return compiledQuestions;
-  }
 }
