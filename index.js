@@ -1,12 +1,10 @@
 // NPM modules
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
-const ROT = require('rot-js');
-const Q = require('Q');
 
 // Custom modules
 const moduleDir = './components/';
-const validators = require(moduleDir + 'validator.js');
+const validators = require(moduleDir + 'validators.js');
 const filters = require(moduleDir + 'filters.js')
 const templates = require(moduleDir + 'templates.js');
 const questions = require(moduleDir + 'questions.js');
