@@ -40,8 +40,6 @@ function createArea(answers) {
 function createRooms(start, end) {
 
   if (start === end) return;
-  console.log("start is ", start);
-  console.log("end is ", end);
 
   var roomQuestions = [
     questions.titleRoom,
@@ -55,7 +53,9 @@ function createRooms(start, end) {
 
   function createRoom(answers) {
     var vnum = start++;
-    var exits = createExits(answers.numExits).then(addRoomToList);
+    var exits = [];
+    createExits(answers.numExits)
+    addRoomToList(exits);
 
     function addRoomToList(exits) {
       roomsCreated.push(
@@ -67,27 +67,29 @@ function createRooms(start, end) {
           area
         ));
     }
-    console.log("Pushing :::", roomsCreated);
-    console.log("Recursing :::");
     createRooms(start, end);
   }
 
   function createExits(amount, current) {
-    console.log("In exits???");
-    current = current || 1;
-    if (amount === current) return;
-    var exitsCreated = [];
+    console.log("Creating exits...");
+    current = current || 0;
     var exitQuestions = [
       questions.exitDestination,
       questions.exitLabel,
       questions.leaveMessage
     ];
 
-    inquirer.prompt(
-      exitQuestions,
-      createExit);
+    function createExit() {
+      inquirer.prompt(
+        exitQuestions,
+        addExit);
+    }
 
-    function createExit(answers) {
+    function addExit(answers) {
+      if (amount === current) {
+        return;
+      }
+
       var exit = {
         location: answers.destination,
         direction: answers.label,
@@ -97,9 +99,8 @@ function createRooms(start, end) {
       exit.leaveMessage ?
         exit.leaveMessage = en(exit.leaveMessage) : delete exit.leaveMessage;
 
-      exitsCreated.push(
-
-      );
+      exits.push(exit);
+      createExit();
     }
   }
 }
