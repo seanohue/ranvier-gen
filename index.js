@@ -10,6 +10,9 @@ const filters = require(moduleDir + 'filters.js')
 const templates = require(moduleDir + 'templates.js');
 const questions = require(moduleDir + 'questions.js');
 
+var areaManifest;
+var roomsCreated;
+
 
 init();
 
@@ -17,22 +20,31 @@ function init() {
   inquirer.prompt(
     [
       questions.howManyRooms,
-      questions.startingLocation
+      questions.startingLocation,
+      questions.areaName,
+      questions.areaLevelMin,
+      questions.areaLevelMax
     ],
-    beginRoomCreation);
+    areaCreation);
 }
 
-function beginRoomCreation(answers) {
+function areaCreation(answers) {
   var endingLocation = answers.start + answers.amount;
+  var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
   var roomQuestions = [
     questions.titleRoom,
     questions.describeRoom
   ];
 
+  areaManifest = new templates.AreaManifest(
+    answers.areaName,
+    suggestedLevels
+  );
+  console.log(areaManifest);
+
+  // can do this with recursion?
   inquirer.prompt(
-    questions.compile(
-      roomQuestions,
-      answers.amount),
+    roomQuestions,
     function(a) {
       console.log(a);
     });

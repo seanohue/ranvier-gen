@@ -3,10 +3,11 @@ const filters = require(moduleDir + 'filters.js')
 
 
 const AreaManifest = function areaConstructor(title, range) {
-  return {
-    title: title,
-    suggested_range: range
-  }
+  var area = {}
+  area[title] = {};
+  area[title].title = title;
+  area[title].range = range;
+  return area;
 };
 
 const Room = function roomConstructor(title, location, description, exits, area) {

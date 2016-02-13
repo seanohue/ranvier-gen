@@ -16,8 +16,32 @@ var startingLocation = {
   message: 'What is the location # (vnum) you would like these rooms to start with?',
   default: 1,
   validate: validators.positiveInt,
-  filter: Number
+  filter: String
 };
+
+var areaLevelMin = {
+  name: "levelMin",
+  message: "What is the lowest recommended player level for this area?",
+  default: 1,
+  validate: validators.positiveInt,
+  filter: filters.stringify
+};
+
+var areaLevelMax = {
+  name: "levelMax",
+  message: "What is the highest recommended player level for this area?",
+  default: 99,
+  validate: validators.positiveInt,
+  filter: filters.stringify
+};
+
+var areaName = {
+  name: "areaName",
+  message: "What would you like to call this area? Players will not see this name.",
+  default: "Dungeon",
+  validate: validators.title,
+  filter: filters.stringify
+}
 
 var titleRoom = {
   name: 'title',
@@ -40,19 +64,7 @@ module.exports = {
   startingLocation: startingLocation,
   titleRoom: titleRoom,
   describeRoom: describeRoom,
-  compile: _compile
+  areaName: areaName,
+  areaLevelMax: areaLevelMax,
+  areaLevelMin: areaLevelMin
 };
-
-function _compile(baseQuestions, amount) {
-  var i = q = 0;
-  var compiledQuestions = [];
-  var qlen = baseQuestions.length;
-  for (i = 0; i < amount; i++) {
-    for (q = 0; q < qlen; q++) {
-      var question = baseQuestions[q];
-      question.name += i;
-      compiledQuestions.push(question);
-    }
-  }
-  return compiledQuestions;
-}
