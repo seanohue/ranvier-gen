@@ -8,47 +8,43 @@ const moduleDir = './components/';
 const validators = require(moduleDir + 'validator.js');
 const filters = require(moduleDir + 'filters.js')
 const templates = require(moduleDir + 'templates.js');
+const questions = require(moduleDir + 'questions.js');
 
 
 init();
 
 function init() {
-
-  var howManyRooms = {
-    name: 'amount',
-    message: 'How many rooms would you like to create in this area?',
-    default: 1,
-    validate: validators.positiveInt,
-    filter: Number
-  };
-
-  var startingLocation = {
-    name: 'start',
-    message: 'What is the location # (vnum) you would like these rooms to start with?',
-    default: 1,
-    validate: validators.positiveInt,
-    filter: Number
-  };
-
   inquirer.prompt(
     [
-      howManyRooms,
-      startingLocation
+      questions.howManyRooms,
+      questions.startingLocation
     ],
     beginRoomCreation);
 }
 
 function beginRoomCreation(answers) {
-  var titleRoom = {
-    name: 'title',
-    message: 'What is the player-friendly title of this room?',
-    validate: validators.title,
-    filter: filters.stringify
-  };
-}
+  var endingLocation = answers.start + answers.amount;
+  var roomQuestions = [
+    questions.titleRoom
+  ];
 
-function en(string) {
-  return {
-    en: string
-  };
+  inquirer.prompt(
+    compileQuestions(
+      roomQuestions,
+      answers.amount),
+    function(a) {
+      console.log(a);
+    });
+
+  function compileQuestions(baseQuestions, amount) {
+    var i;
+    var compiledQuestions = [];
+
+    for (i = 0; i < amount; i++) {
+      for (question of baseQuestions) {
+        compiledQuestions.push(question);
+      }
+    }
+    return compiledQuestions;
+  }
 }

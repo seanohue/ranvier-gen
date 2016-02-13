@@ -1,8 +1,15 @@
 module.exports.positiveInt = _positiveInt;
+module.exports.title = _title;
+
+
 
 function _positiveInt(n) {
   n = Number(n);
   if (isNaN(n)) return "Please provide a number";
-  if (n < 0) return "Provide a positive integer."
+  if (n <= 0) return "Provide a positive integer."
   return Number.isInteger(n) || "Provide an integer.";
+}
+
+function _title(title) {
+  return title && title.toString() === title;
 }
