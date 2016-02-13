@@ -41,7 +41,7 @@ var areaName = {
   default: "Dungeon",
   validate: validators.title,
   filter: filters.stringify
-}
+};
 
 var titleRoom = {
   name: 'title',

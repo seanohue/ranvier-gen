@@ -10,9 +10,8 @@ const filters = require(moduleDir + 'filters.js')
 const templates = require(moduleDir + 'templates.js');
 const questions = require(moduleDir + 'questions.js');
 
-var areaManifest;
+var areaManifest, area;
 var roomsCreated;
-
 
 init();
 
@@ -25,27 +24,60 @@ function init() {
       questions.areaLevelMin,
       questions.areaLevelMax
     ],
-    areaCreation);
+    createArea);
 }
 
-function areaCreation(answers) {
-  var endingLocation = answers.start + answers.amount;
+function createArea(answers) {
+  var end = answers.start + answers.amount;
   var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
+
+  saveArea(answers.areaName, suggestedLevels);
+  createRooms(answers.start, end);
+}
+
+function createRooms(start, end) {
+
+  if (start === end) {
+    return;
+  }
+
   var roomQuestions = [
     questions.titleRoom,
-    questions.describeRoom
+    questions.describeRoom,
+    questions.amountOfExits,
   ];
 
+  inquirer.prompt(
+    roomQuestions,
+    createRoom);
+
+  function createRoom(answers) {
+    var vnum = start++;
+    var exits = createExits(numExits);
+
+    roomsCreated.push(
+      templates.Room(
+        filters.en(answers.title),
+        vnum,
+        filters.en(answers.desc),
+        exits,
+        area
+      ));
+
+    createRooms(start, end);
+  }
+
+  function createExits(amount) {
+    // Do a barrel roll.
+  }
+
+}
+
+function saveArea(name, levels) {
+  area = name;
   areaManifest = new templates.AreaManifest(
     answers.areaName,
     suggestedLevels
   );
-  console.log(areaManifest);
-
-  // can do this with recursion?
-  inquirer.prompt(
-    roomQuestions,
-    function(a) {
-      console.log(a);
-    });
+  //TODO: write to filesystem here
 }

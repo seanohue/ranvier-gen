@@ -2,7 +2,6 @@ module.exports.positiveInt = _positiveInt;
 module.exports.title = _title;
 
 
-
 function _positiveInt(n) {
   n = Number(n);
   if (isNaN(n)) return "Please provide a number";
