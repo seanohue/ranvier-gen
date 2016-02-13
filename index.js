@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
 const ROT = require('rot-js');
+const Q = require('Q');
 
 // Custom modules
 const moduleDir = './components/';
@@ -54,17 +55,18 @@ function createRooms(start, end) {
 
   function createRoom(answers) {
     var vnum = start++;
-    var exits = createExits(answers.numExits);
+    var exits = createExits(answers.numExits).then(addRoomToList);
 
-    roomsCreated.push(
-      new templates.Room(
-        filters.en(answers.title),
-        vnum,
-        filters.en(answers.desc),
-        exits,
-        area
-      ));
-    
+    function addRoomToList(exits) {
+      roomsCreated.push(
+        new templates.Room(
+          filters.en(answers.title),
+          vnum,
+          filters.en(answers.desc),
+          exits,
+          area
+        ));
+    }
     console.log("Pushing :::", roomsCreated);
     console.log("Recursing :::");
     createRooms(start, end);

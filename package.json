@@ -6,6 +6,7 @@
   "dependencies": {
     "inquirer": "^0.12.0",
     "js-yaml": "^3.5.3",
+    "q": "^1.4.1",
     "rot-js": "^0.6.2"
   },
   "devDependencies": {},
