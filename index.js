@@ -39,6 +39,8 @@ function createArea(answers) {
 function createRooms(start, end) {
 
   if (start === end) return;
+  console.log("start is ", start);
+  console.log("end is ", end);
 
   var roomQuestions = [
     questions.titleRoom,
@@ -62,11 +64,14 @@ function createRooms(start, end) {
         exits,
         area
       ));
-
+    
+    console.log("Pushing :::", roomsCreated);
+    console.log("Recursing :::");
     createRooms(start, end);
   }
 
   function createExits(amount, current) {
+    console.log("In exits???");
     current = current || 1;
     if (amount === current) return;
     var exitsCreated = [];
@@ -98,10 +103,12 @@ function createRooms(start, end) {
 }
 
 function saveArea(name, levels) {
+  console.log("Saving area manifest...");
   area = name;
   areaManifest = new templates.AreaManifest(
     name,
     levels
   );
   //TODO: write to filesystem here
+  console.log("Done!");
 }

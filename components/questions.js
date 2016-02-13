@@ -16,7 +16,7 @@ var startingLocation = {
   message: 'What is the location # (vnum) you would like these rooms to start with?',
   default: 1,
   validate: validators.positiveInt,
-  filter: String
+  filter: Number
 };
 
 var areaLevelMin = {
