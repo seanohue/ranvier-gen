@@ -30,19 +30,15 @@ function init() {
 }
 
 function createArea(answers) {
-  var end = answers.start + answers.amount;
   var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
 
   saveArea(answers.areaName, suggestedLevels);
-  createRooms(answers.start, end);
+  createRooms(answers.start, answers.amount);
 }
 
-function createRooms(start, end) {
-  if (start === end) {
-    saveRooms();
-    return;
-  }
 
+
+function createRooms(vnum, amountOfRooms) {
   var roomQuestions = [
     questions.titleRoom,
     questions.describeRoom,
@@ -54,24 +50,23 @@ function createRooms(start, end) {
     createRoom);
 
   function createRoom(answers) {
-    var vnum = start++;
     createExits(answers.numExits)
     addRoomToList(exits);
 
     function addRoomToList(exits) {
       roomsCreated.push(
         new templates.Room(
-          filters.en(answers.title),
-          vnum,
-          filters.en(answers.desc),
+          answers.title,
+          vnum++,
+          answers.desc,
           exits,
           area));
       exits = [];
     }
-    createRooms(start, end);
+    createRooms();
   }
 
-  function createExits(amount) {
+  function createExits(amountOfExits) {
     var exitQuestions = [
       questions.exitDestination,
       questions.exitLabel,
@@ -98,11 +93,17 @@ function createRooms(start, end) {
         exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
 
       exits.push(exit);
-      if (exits.length === amount) return;
-      createExit();
+
+      if (exits.length === amountOfExits) {
+        if (roomsCreated.length === amountOfRooms)
+          saveRooms();
+        return;
+      } else createExit();
     }
   }
 }
+
+
 
 function saveArea(name, levels) {
   console.log("Saving area manifest...");
@@ -123,14 +124,16 @@ function saveRooms() {
 
 function saveToFile(entity, isArea) {
   var dir = './areas/';
-  var name = isArea ? 'manifest.yml' : entity.title + '.yml';
+  console.log(entity);
+  var name = isArea ? 'manifest.yml' : entity.title.en + '.yml';
   fs.writeFile(
-    dir + name,
+    filters.filename(dir + name),
     yaml.safeDump(entity),
     handleSaveError
   );
 }
 
 function handleSaveError(err) {
+  if (!err) return;
   console.log(err);
 }
