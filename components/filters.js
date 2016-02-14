@@ -8,7 +8,7 @@ function _stringify(s) {
 }
 
 function _leaveMsg(s) {
-  return ' ' + _stringify(s);
+  return ' '.concat(_stringify(s));
 }
 
 function _filename(s) {
