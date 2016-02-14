@@ -85,9 +85,7 @@ function createRooms(start, end) {
     }
 
     function addExit(answers) {
-      if (amount === current) {
-        return;
-      }
+      if (amount === current) return;
 
       var exit = {
         location: answers.destination,
@@ -96,7 +94,7 @@ function createRooms(start, end) {
       };
 
       exit.leaveMessage ?
-        exit.leaveMessage = en(exit.leaveMessage) : delete exit.leaveMessage;
+        exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
 
       exits.push(exit);
       createExit();

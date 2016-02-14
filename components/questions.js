@@ -3,6 +3,7 @@ const validators = require(moduleDir + 'validators.js');
 const filters = require(moduleDir + 'filters.js')
 const templates = require(moduleDir + 'templates.js');
 
+
 /*
 ///// Area Questions
 */
@@ -95,6 +96,15 @@ var exitLabel = {
   filter: filters.stringify
 };
 
+var leaveMessage = {
+  name: 'leaveMessage',
+  message: 'What do you want to be broadcast to the room when players leave? (optional)',
+  default: ' does a merry jig on their way out.',
+  validate: validators.title,
+  filter: filters.leaveMsg
+};
+
+
 module.exports = {
   howManyRooms: howManyRooms,
   startingLocation: startingLocation,
@@ -103,5 +113,8 @@ module.exports = {
   areaName: areaName,
   areaLevelMax: areaLevelMax,
   areaLevelMin: areaLevelMin,
-  amountOfExits: amountOfExits
+  amountOfExits: amountOfExits,
+  exitDestination: exitDestination,
+  exitLabel: exitLabel,
+  leaveMessage: leaveMessage
 };
