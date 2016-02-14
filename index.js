@@ -50,10 +50,12 @@ function createRooms(vnum, amountOfRooms) {
     createRoom);
 
   function createRoom(answers) {
+    console.log("Created Rooms Are ", roomsCreated);
     createExits(answers.numExits)
     addRoomToList(exits);
 
     function addRoomToList(exits) {
+      console.log("pushing room to list");
       roomsCreated.push(
         new templates.Room(
           answers.title,
@@ -63,7 +65,6 @@ function createRooms(vnum, amountOfRooms) {
           area));
       exits = [];
     }
-    createRooms();
   }
 
   function createExits(amountOfExits) {
@@ -95,9 +96,12 @@ function createRooms(vnum, amountOfRooms) {
       exits.push(exit);
 
       if (exits.length === amountOfExits) {
+        console.log("Max amount of exits reached...");
+        console.log("Rooms to create: ", amountOfRooms);
+        console.log("Rooms created: ", roomsCreated.length);
         if (roomsCreated.length === amountOfRooms)
           saveRooms();
-        return;
+        createRooms();
       } else createExit();
     }
   }
