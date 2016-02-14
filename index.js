@@ -11,6 +11,7 @@ const questions = require(moduleDir + 'questions.js');
 
 var areaManifest, area;
 var roomsCreated = [];
+var exits = [];
 
 init();
 
@@ -50,7 +51,6 @@ function createRooms(start, end) {
 
   function createRoom(answers) {
     var vnum = start++;
-    var exits = [];
     createExits(answers.numExits)
     addRoomToList(exits);
 
@@ -67,8 +67,7 @@ function createRooms(start, end) {
     createRooms(start, end);
   }
 
-  function createExits(amount, current) {
-    current = current || 0;
+  function createExits(amount) {
     var exitQuestions = [
       questions.exitDestination,
       questions.exitLabel,
@@ -85,8 +84,6 @@ function createRooms(start, end) {
     }
 
     function addExit(answers) {
-      if (amount === current) return;
-
       var exit = {
         location: answers.destination,
         direction: answers.label,
@@ -97,6 +94,7 @@ function createRooms(start, end) {
         exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
 
       exits.push(exit);
+      if (exits.length === amount) return;
       createExit();
     }
   }
