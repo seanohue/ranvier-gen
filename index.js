@@ -29,6 +29,8 @@ function init() {
     createArea);
 }
 
+
+
 function createArea(answers) {
   var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
 
@@ -50,7 +52,6 @@ function createRooms(vnum, amountOfRooms) {
     createRoom);
 
   function createRoom(answers) {
-    console.log("Created Rooms Are ", roomsCreated);
     createExits(answers.numExits)
     addRoomToList(exits);
 
@@ -95,20 +96,20 @@ function createRooms(vnum, amountOfRooms) {
       console.log("Adding exit ", exit);
       exits.push(exit);
 
-      if (exits.length === amountOfExits) {
-        console.log("Max amount of exits reached...");
-        console.log("Rooms to create: ", amountOfRooms);
-        console.log("Rooms created: ", roomsCreated.length);
+      if (exits.length >= amountOfExits) {
         if (roomsCreated.length === amountOfRooms)
           saveRooms();
         else
           createRooms();
-      } else createExit();
+      } else
+        createExit();
     }
   }
 }
 
-
+/*
+///// Saving...
+*/
 
 function saveArea(name, levels) {
   console.log("Saving area manifest...");
