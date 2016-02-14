@@ -36,7 +36,6 @@ function createArea(answers) {
 }
 
 function createRooms(start, end) {
-
   if (start === end) return;
 
   var roomQuestions = [
@@ -69,7 +68,6 @@ function createRooms(start, end) {
   }
 
   function createExits(amount, current) {
-    console.log("Creating exits...");
     current = current || 0;
     var exitQuestions = [
       questions.exitDestination,
@@ -77,7 +75,10 @@ function createRooms(start, end) {
       questions.leaveMessage
     ];
 
+    createExit();
+
     function createExit() {
+      console.log("Creating exits...");
       inquirer.prompt(
         exitQuestions,
         addExit);

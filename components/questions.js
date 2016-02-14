@@ -1,5 +1,5 @@
 const moduleDir = './';
-const validators = require(moduleDir + 'validator.js');
+const validators = require(moduleDir + 'validators.js');
 const filters = require(moduleDir + 'filters.js')
 const templates = require(moduleDir + 'templates.js');
 
