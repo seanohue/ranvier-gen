@@ -1,13 +1,14 @@
 // NPM modules
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
+const fs = require('fs');
 
 // Custom modules
-const moduleDir = './components/';
-const validators = require(moduleDir + 'validators.js');
-const filters = require(moduleDir + 'filters.js')
-const templates = require(moduleDir + 'templates.js');
-const questions = require(moduleDir + 'questions.js');
+const comp = './components/';
+const validators = require(comp + 'validators.js');
+const filters = require(comp + 'filters.js')
+const templates = require(comp + 'templates.js');
+const questions = require(comp + 'questions.js');
 
 var areaManifest, area;
 var roomsCreated = [];
@@ -37,7 +38,10 @@ function createArea(answers) {
 }
 
 function createRooms(start, end) {
-  if (start === end) return;
+  if (start === end) {
+    saveRooms();
+    return;
+  }
 
   var roomQuestions = [
     questions.titleRoom,
@@ -61,8 +65,8 @@ function createRooms(start, end) {
           vnum,
           filters.en(answers.desc),
           exits,
-          area
-        ));
+          area));
+      exits = [];
     }
     createRooms(start, end);
   }
@@ -107,6 +111,26 @@ function saveArea(name, levels) {
     name,
     levels
   );
-  //TODO: write to filesystem here
+  saveToFile(areaManifest, true);
   console.log("Done!");
+}
+
+function saveRooms() {
+  console.log("Saving rooms...");
+  roomsCreated.forEach(saveToFile);
+  console.log("Done!");
+}
+
+function saveToFile(entity, isArea) {
+  var dir = './areas/';
+  var name = isArea ? 'manifest.yml' : entity.title + '.yml';
+  fs.writeFile(
+    dir + name,
+    yaml.safeDump(entity),
+    handleSaveError
+  );
+}
+
+function handleSaveError(err) {
+  console.log(err);
 }
