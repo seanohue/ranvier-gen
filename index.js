@@ -13,12 +13,29 @@ const questions = require(comp + 'questions.js');
 var areaManifest, area;
 var roomsCreated = [];
 var exits = [];
+var saveDir = '../entities/areas';
+
 
 init();
 
-//TODO: Check for proper installation on init.
 function init() {
+  checkInstallation();
   console.log('\033[2J');
+}
+
+function checkInstallation() {
+  fs.access(saveDir, handleInstallationError);
+}
+
+function handleInstallationError(err) {
+  if (err) {
+    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n", err);
+    saveDir = './areas';
+    askAboutArea();
+  }
+}
+
+function askAboutArea() {
   inquirer.prompt(
     [
       questions.howManyRooms,
@@ -29,8 +46,6 @@ function init() {
     ],
     createArea);
 }
-
-
 
 function createArea(answers) {
   var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
