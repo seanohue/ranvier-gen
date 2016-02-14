@@ -16,6 +16,7 @@ var exits = [];
 
 init();
 
+//TODO: Check for proper installation on init.
 function init() {
   console.log('\033[2J');
   inquirer.prompt(
@@ -68,6 +69,8 @@ function createRooms(vnum, amountOfRooms) {
     }
   }
 
+
+  //TODO: Populate list of rooms when defining exit destination directly from ranvierMUD directory.
   function createExits(amountOfExits) {
     var exitQuestions = [
       questions.exitDestination,
@@ -109,6 +112,7 @@ function createRooms(vnum, amountOfRooms) {
 
 /*
 ///// Saving...
+/////TODO: Save directly to ranvierMUD areas when installed as plugin.
 */
 
 function saveArea(name, levels) {
