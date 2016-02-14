@@ -92,7 +92,7 @@ function createRooms(vnum, amountOfRooms) {
 
       exit.leaveMessage ?
         exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
-
+      console.log("Adding exit ", exit);
       exits.push(exit);
 
       if (exits.length === amountOfExits) {
@@ -101,7 +101,8 @@ function createRooms(vnum, amountOfRooms) {
         console.log("Rooms created: ", roomsCreated.length);
         if (roomsCreated.length === amountOfRooms)
           saveRooms();
-        createRooms();
+        else
+          createRooms();
       } else createExit();
     }
   }
