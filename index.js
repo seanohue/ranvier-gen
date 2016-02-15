@@ -151,10 +151,11 @@ function saveRooms() {
 }
 
 function saveToFile(entity, isArea) {
-  console.log(entity);
-  var name = isArea ? 'manifest.yml' : entity.title.en + '.yml';
+  var name = isArea ? 'manifest' : entity.title.en;
+  var pathToSaveFile = filters.filename(saveDir + filters.noSpecialChars(name) + ".yml");
+
   fs.writeFile(
-    filters.filename(saveDir + name),
+    pathToSaveFile,
     yaml.safeDump(entity),
     handleSaveError
   );
