@@ -2,7 +2,7 @@ module.exports.stringify = _stringify;
 module.exports.en = _en;
 module.exports.filename = _filename;
 module.exports.leaveMsg = _leaveMsg;
-module.exports.noSpecialChars = noSpecialChars;
+module.exports.noSpecialChars = _noSpecialChars;
 
 function _stringify(s) {
   return String(s).trim();
