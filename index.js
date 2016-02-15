@@ -13,7 +13,7 @@ const questions = require(comp + 'questions.js');
 var areaManifest, area;
 var roomsCreated = [];
 var exits = [];
-var saveDir = '../entities/areas';
+var saveDir = '../../entities/areas';
 
 
 init();
