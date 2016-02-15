@@ -12,7 +12,7 @@ function _leaveMsg(s) {
 }
 
 function _filename(s) {
-  return s.toLowerCase().split(' ').join('');
+  return s.toLowerCase().split(' ').join('').replace(/[^\w\s]/gi, '');
 }
 
 function _en(string) {
