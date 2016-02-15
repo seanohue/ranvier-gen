@@ -139,6 +139,7 @@ function saveArea(name, levels) {
     name,
     levels
   );
+  fs.mkdirSync(saveDir);
   saveToFile(areaManifest, true);
   console.log("Done!");
 }
