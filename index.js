@@ -13,7 +13,7 @@ const questions = require(comp + 'questions.js');
 var areaManifest, area;
 var roomsCreated = [];
 var exits = [];
-var saveDir = '../../entities/areas';
+var saveDir = '../../entities/areas/';
 
 init();
 
@@ -30,7 +30,7 @@ function checkInstallation() {
 function logWarningOrGoToPrompt(err) {
   if (err) {
     console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n");
-    saveDir = './areas';
+    saveDir = './areas/';
   }
   askAboutArea();
 }
@@ -134,6 +134,7 @@ function createRooms(vnum, amountOfRooms) {
 function saveArea(name, levels) {
   console.log("Saving area manifest...");
   area = name;
+  saveDir.concat(name + '/');
   areaManifest = new templates.AreaManifest(
     name,
     levels
