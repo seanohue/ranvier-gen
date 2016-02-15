@@ -24,15 +24,15 @@ function init() {
 }
 
 function checkInstallation() {
-  fs.access(saveDir, handleInstallationError);
-  askAboutArea();
+  fs.access(saveDir, logWarningOrGoToPrompt);
 }
 
-function handleInstallationError(err) {
+function logWarningOrGoToPrompt(err) {
   if (err) {
     console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n");
     saveDir = './areas';
   }
+  askAboutArea();
 }
 
 function askAboutArea() {
