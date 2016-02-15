@@ -134,7 +134,7 @@ function createRooms(vnum, amountOfRooms) {
 function saveArea(name, levels) {
   console.log("Saving area manifest...");
   area = name;
-  saveDir.concat(name + '/');
+  saveDir = saveDir + name + '/';
   areaManifest = new templates.AreaManifest(
     name,
     levels
