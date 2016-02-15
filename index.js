@@ -29,7 +29,7 @@ function checkInstallation() {
 
 function handleInstallationError(err) {
   if (err) {
-    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n", err);
+    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n");
     saveDir = './areas';
     askAboutArea();
   }
@@ -128,6 +128,7 @@ function createRooms(vnum, amountOfRooms) {
 /*
 ///// Saving...
 /////TODO: Save directly to ranvierMUD areas when installed as plugin.
+/////TODO: Extract into module, probably.
 */
 
 function saveArea(name, levels) {
@@ -148,11 +149,10 @@ function saveRooms() {
 }
 
 function saveToFile(entity, isArea) {
-  var dir = './areas/';
   console.log(entity);
   var name = isArea ? 'manifest.yml' : entity.title.en + '.yml';
   fs.writeFile(
-    filters.filename(dir + name),
+    filters.filename(saveDir + name),
     yaml.safeDump(entity),
     handleSaveError
   );
