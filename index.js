@@ -139,16 +139,22 @@ function saveArea(name, levels) {
     name,
     levels
   );
-  fs.mkdirSync(saveDir);
-  saveToFile(areaManifest, true);
+
+  fs.mkdir(saveDir, function handleMkDir(err) {
+    if (err) { console.error(err); }
+    saveToFile(areaManifest, true);
+  });
+
   console.log("Done!");
 }
+
 
 function saveRooms() {
   console.log("Saving rooms...");
   roomsCreated.forEach(saveToFile);
   console.log("Done!");
 }
+
 
 function saveToFile(entity, isArea) {
   var name = isArea ? 'manifest' : entity.title.en;
@@ -164,5 +170,5 @@ function saveToFile(entity, isArea) {
 
 function handleSaveError(err) {
   if (!err) return;
-  console.log(err);
+  console.error(err);
 }
