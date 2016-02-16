@@ -2,6 +2,8 @@
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
 const fs = require('fs');
+const errno = require('errno')
+
 
 // Custom modules
 const comp = './components/';
@@ -10,6 +12,8 @@ const filters = require(comp + 'filters.js')
 const templates = require(comp + 'templates.js');
 const questions = require(comp + 'questions.js');
 
+
+// State
 var areaManifest, area;
 var roomsCreated = [];
 var exits = [];
@@ -23,17 +27,21 @@ function init() {
   console.log('\033[2J');
 }
 
+
 function checkInstallation() {
   fs.access(saveDir, logWarningOrGoToPrompt);
 }
 
+
 function logWarningOrGoToPrompt(err) {
   if (err) {
     console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n");
+    console.log(errmsg(err));
     saveDir = './areas/';
   }
   askAboutArea();
 }
+
 
 function askAboutArea() {
   inquirer.prompt(
@@ -47,13 +55,13 @@ function askAboutArea() {
     createArea);
 }
 
+
 function createArea(answers) {
   var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
 
   saveArea(answers.areaName, suggestedLevels);
   createRooms(answers.start, answers.amount);
 }
-
 
 
 function createRooms(vnum, amountOfRooms) {
@@ -67,9 +75,11 @@ function createRooms(vnum, amountOfRooms) {
     roomQuestions,
     createRoom);
 
+
   function createRoom(answers) {
     createExits(answers.numExits)
     addRoomToList(exits);
+
 
     function addRoomToList(exits) {
       console.log("pushing room to list");
@@ -95,12 +105,14 @@ function createRooms(vnum, amountOfRooms) {
 
     createExit();
 
-    function createExit() {
+
+    function createExit() { // better name needed
       console.log("Creating exits...");
       inquirer.prompt(
         exitQuestions,
         addExit);
     }
+
 
     function addExit(answers) {
       var exit = {
@@ -170,5 +182,22 @@ function saveToFile(entity, isArea) {
 
 function handleSaveError(err) {
   if (!err) return;
-  console.error(err);
+  console.error(errmsg(err));
+}
+
+
+// Messaging-related functions
+function errmsg(err) {
+  var str = 'Error: '
+    // if it's a libuv error then get the description from errno 
+  if (errno.errno[err.errno])
+    str += errno.errno[err.errno].description
+  else
+    str += err.message
+
+  // if it's a `fs` error then it'll have a 'path' property 
+  if (err.path)
+    str += ' [' + err.path + ']'
+
+  return str
 }
