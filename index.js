@@ -145,7 +145,9 @@ function createRooms(vnum, amountOfRooms) {
 function saveArea(name, levels) {
   console.log("Saving area manifest...".blue);
   area = name;
-  saveDir = saveDir + filters.noSpecialChars(area) + '/';
+  saveDir = filters.filename(
+    saveDir +
+    filters.noSpecialChars(area) + '/');
   areaManifest = new templates.AreaManifest(
     name,
     levels
@@ -170,6 +172,7 @@ function saveRooms() {
 function saveToFile(entity, isArea) {
   var name = isArea ? 'manifest' : entity.title.en;
   var pathToSaveFile = filters.filename(saveDir + filters.noSpecialChars(name) + ".yml");
+  console.log("Saving to " + pathToSaveFile.green)
 
   fs.writeFile(
     pathToSaveFile,
