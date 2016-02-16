@@ -16,7 +16,9 @@ const questions = require(comp + 'questions.js');
 
 // State
 var areaManifest, area;
-var roomsCreated = [];
+var newRooms = [];
+var oldAreas = [];
+var oldRooms = [];
 var exits = [];
 var saveDir = '../../entities/areas/';
 
@@ -39,7 +41,10 @@ function getAreaNames() {
 
 function storeAreaNames(err, files) {
   if (err) { errmsg(err); }
-  files.forEach((file) => { console.log(file.blue); })
+  oldAreas = files.filter((file) => {
+    return file.indexOf('.') === -1;
+  });
+  oldAreas.forEach((area) => { console.log(area.blue); });
 }
 
 
@@ -96,7 +101,7 @@ function createRooms(vnum, amountOfRooms) {
 
 
     function addRoomToList(exits) {
-      roomsCreated.push(
+      newRooms.push(
         new templates.Room(
           answers.title,
           vnum++,
@@ -139,7 +144,7 @@ function createRooms(vnum, amountOfRooms) {
       exits.push(exit);
 
       if (exits.length >= amountOfExits) {
-        if (roomsCreated.length === amountOfRooms)
+        if (newRooms.length === amountOfRooms)
           saveRooms();
         else
           createRooms();
@@ -177,7 +182,7 @@ function saveArea(name, levels) {
 
 function saveRooms() {
   console.log("Saving rooms...".blue);
-  roomsCreated.forEach(saveToFile);
+  newRooms.forEach(saveToFile);
   console.log("Done!".blue);
 }
 
