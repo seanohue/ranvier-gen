@@ -2,7 +2,8 @@
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
 const fs = require('fs');
-const errno = require('errno')
+const errno = require('errno');
+const colors = require('colors');
 
 
 // Custom modules
@@ -35,7 +36,7 @@ function checkInstallation() {
 
 function logWarningOrGoToPrompt(err) {
   if (err) {
-    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n");
+    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n".purple);
     console.log(errmsg(err));
     saveDir = './areas/';
   }
@@ -82,7 +83,6 @@ function createRooms(vnum, amountOfRooms) {
 
 
     function addRoomToList(exits) {
-      console.log("pushing room to list");
       roomsCreated.push(
         new templates.Room(
           answers.title,
@@ -107,7 +107,7 @@ function createRooms(vnum, amountOfRooms) {
 
 
     function createExit() { // better name needed
-      console.log("Creating exits...");
+      console.log("Creating exits...".blue);
       inquirer.prompt(
         exitQuestions,
         addExit);
@@ -123,7 +123,6 @@ function createRooms(vnum, amountOfRooms) {
 
       exit.leaveMessage ?
         exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
-      console.log("Adding exit ", exit);
       exits.push(exit);
 
       if (exits.length >= amountOfExits) {
@@ -144,33 +143,44 @@ function createRooms(vnum, amountOfRooms) {
 */
 
 function saveArea(name, levels) {
-  console.log("Saving area manifest...");
+  console.log("Saving area manifest...".blue);
   area = name;
-  saveDir = saveDir + name + '/';
+  saveDir = filters.filename(
+    saveDir +
+    filters.noSpecialChars(area) + '/');
   areaManifest = new templates.AreaManifest(
     name,
     levels
   );
-  fs.mkdirSync(saveDir);
-  saveToFile(areaManifest, true);
-  console.log("Done!");
+
+  fs.mkdir(saveDir, function handleMkDir(err) {
+    if (err) { console.error(err); }
+    saveToFile(areaManifest, true);
+  });
+
+  console.log("Done!".blue);
 }
+
 
 function saveRooms() {
-  console.log("Saving rooms...");
+  console.log("Saving rooms...".blue);
   roomsCreated.forEach(saveToFile);
-  console.log("Done!");
+  console.log("Done!".blue);
 }
 
+
 function saveToFile(entity, isArea) {
-  console.log(entity);
-  var name = isArea ? 'manifest.yml' : entity.title.en + '.yml';
+  var name = isArea ? 'manifest' : entity.title.en;
+  var pathToSaveFile = filters.filename(saveDir + filters.noSpecialChars(name) + ".yml");
+  console.log("Saving to " + pathToSaveFile.green)
+
   fs.writeFile(
-    filters.filename(saveDir + name),
+    pathToSaveFile,
     yaml.safeDump(entity),
     handleSaveError
   );
 }
+
 
 function handleSaveError(err) {
   if (!err) return;
@@ -191,5 +201,5 @@ function errmsg(err) {
   if (err.path)
     str += ' [' + err.path + ']'
 
-  return str
+  return str.red
 }
