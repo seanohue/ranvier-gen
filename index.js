@@ -56,7 +56,7 @@ function getOldRooms() {
 
 function storeOldRooms(area) {
   return function(err, files) {
-    files.forEach(function loadFile(file) => {
+    files.forEach((file) => {
       oldRooms.push(yaml.safeLoad(
         fs.readFileSync(saveDir + area + '/' + file,
           'utf8')));
