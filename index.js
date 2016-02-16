@@ -2,7 +2,8 @@
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
 const fs = require('fs');
-const errno = require('errno')
+const errno = require('errno');
+const colors = require('colors');
 
 
 // Custom modules
@@ -35,7 +36,7 @@ function checkInstallation() {
 
 function logWarningOrGoToPrompt(err) {
   if (err) {
-    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n");
+    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n".purple);
     console.log(errmsg(err));
     saveDir = './areas/';
   }
@@ -82,7 +83,6 @@ function createRooms(vnum, amountOfRooms) {
 
 
     function addRoomToList(exits) {
-      console.log("pushing room to list");
       roomsCreated.push(
         new templates.Room(
           answers.title,
@@ -107,7 +107,7 @@ function createRooms(vnum, amountOfRooms) {
 
 
     function createExit() { // better name needed
-      console.log("Creating exits...");
+      console.log("Creating exits...".blue);
       inquirer.prompt(
         exitQuestions,
         addExit);
@@ -123,7 +123,6 @@ function createRooms(vnum, amountOfRooms) {
 
       exit.leaveMessage ?
         exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
-      console.log("Adding exit ", exit);
       exits.push(exit);
 
       if (exits.length >= amountOfExits) {
@@ -144,7 +143,7 @@ function createRooms(vnum, amountOfRooms) {
 */
 
 function saveArea(name, levels) {
-  console.log("Saving area manifest...");
+  console.log("Saving area manifest...".blue);
   area = name;
   saveDir = saveDir + filters.noSpecialChars(area) + '/';
   areaManifest = new templates.AreaManifest(
@@ -157,14 +156,14 @@ function saveArea(name, levels) {
     saveToFile(areaManifest, true);
   });
 
-  console.log("Done!");
+  console.log("Done!".blue);
 }
 
 
 function saveRooms() {
-  console.log("Saving rooms...");
+  console.log("Saving rooms...".blue);
   roomsCreated.forEach(saveToFile);
-  console.log("Done!");
+  console.log("Done!".blue);
 }
 
 
@@ -199,5 +198,5 @@ function errmsg(err) {
   if (err.path)
     str += ' [' + err.path + ']'
 
-  return str
+  return str.red
 }
