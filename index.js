@@ -45,8 +45,24 @@ function storeAreaNames(err, files) {
     return file.indexOf('.') === -1;
   });
   oldAreas.forEach((area) => { console.log(area.blue); });
+  getOldRooms();
 }
 
+function getOldRooms() {
+  for (area in oldAreas) {
+    fs.readdir(saveDir + area, storeOldRooms(area));
+  }
+}
+
+function storeOldRooms(area) {
+  return function(err, files) {
+    files.forEach(function loadFile(file) => {
+      oldRooms.push(yaml.safeLoad(
+        fs.readFileSync(saveDir + area + '/' + file,
+          'utf8')));
+    });
+  }
+}
 
 function logWarningOrGoToPrompt(err) {
   if (err) {
@@ -189,7 +205,8 @@ function saveRooms() {
 
 function saveToFile(entity, isArea) {
   var name = isArea ? 'manifest' : entity.title.en;
-  var pathToSaveFile = filters.filename(saveDir + filters.noSpecialChars(name) +
+  var pathToSaveFile = filters.filename(saveDir + filters.noSpecialChars(
+      name) +
     ".yml");
   console.log("Saving to " + pathToSaveFile.green)
 
