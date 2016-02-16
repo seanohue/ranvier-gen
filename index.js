@@ -68,8 +68,9 @@ function storeOldRooms(area, err, files) {
 function logWarningOrGoToPrompt(err) {
   if (err) {
     console.log(
-      "Install this tool in the plugins directory of RanvierMUD for greater ease of use." +
-      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n"
+      "Install this tool in the plugins directory of RanvierMUD for greater ease of use.".orange +
+      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.".green +
+      "\nYou may also need to manually add exits. :(\n"
       .purple);
     console.log(errmsg(err));
     saveDir = './areas/';
