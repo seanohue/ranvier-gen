@@ -61,6 +61,7 @@ function storeOldRooms(area) {
         fs.readFileSync(saveDir + area + '/' + file,
           'utf8')));
     });
+    console.log("".concat(oldRooms).green);
   }
 }
 
