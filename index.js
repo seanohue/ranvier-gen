@@ -54,7 +54,7 @@ function getOldRooms() {
   }
 }
 
-function storeOldRooms(area) {
+function storeOldRooms(area, err, files) {
   return function(err, files) {
     files.forEach((file) => {
       oldRooms.push(yaml.safeLoad(
