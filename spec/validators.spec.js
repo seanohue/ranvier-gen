@@ -43,4 +43,23 @@ describe('>>> validators:', () => {
         'Provide an integer.');
     });
   });
+
+  describe('~~~~ title', () => {
+    
+    it('should return true if it is a non-whitespace/empty string', () => {
+      validators.title('sandwichtown').should.be.true;
+    });
+    
+    it('should return false if it is empty', () => {
+      validators.title('').should.be.false;
+    });
+    
+    it('should return false if it is whitespace', () => {
+      validators.title('        			').should.be.false;
+    });
+    
+    it('should return false if it is somehow an object', () => {
+      validators.title({ what: 'isHappening' }).should.be.false;
+    });
+  });
 });
