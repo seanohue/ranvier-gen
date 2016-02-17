@@ -1,5 +1,4 @@
 const errno = require('errno');
-const colors = require('colors');
 
 module.exports.errmsg = _errmsg;
 
@@ -14,7 +13,7 @@ function _errmsg(err) {
 
   // if it's a `fs` error then it'll have a 'path' property
   if (err.path)
-    str += ' [' + err.path + ']'.red;
+    str += ' [' + err.path + ']';
 
   return str;
 }
