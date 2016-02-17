@@ -50,26 +50,28 @@ function storeAreaNames(err, files) {
 
 function getOldRooms() {
   for (area in oldAreas) {
-    fs.readdir(saveDir + area, storeOldRooms(area));
+    fs.readdir(saveDir + area, storeOldRooms);
   }
 }
 
-function storeOldRooms(area, err, files) {
-  return function(err, files) {
+function storeOldRooms(err, files) {
+  if (files) {
     files.forEach((file) => {
       oldRooms.push(yaml.safeLoad(
         fs.readFileSync(saveDir + area + '/' + file,
           'utf8')));
     });
     console.log("".concat(oldRooms).green);
-  }
+  } else console.log('aint no rooms'.red);
 }
 
 function logWarningOrGoToPrompt(err) {
   if (err) {
     console.log(
-      "Install this tool in the plugins directory of RanvierMUD for greater ease of use.".orange +
-      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.".green +
+      "Install this tool in the plugins directory of RanvierMUD for greater ease of use."
+      .orange +
+      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD."
+      .green +
       "\nYou may also need to manually add exits. :(\n"
       .purple);
     console.log(errmsg(err));
