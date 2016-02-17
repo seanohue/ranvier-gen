@@ -54,14 +54,17 @@ function findOldRooms() {
     for (var area in oldAreas) {
       areaDir = saveDir + oldAreas[area];
       console.log("Looking in " + areaDir);
-      if (area) fs.readdir(areaDir, loadOldRooms);
+      if (area) {
+        var areas = fs.readdirSync(areaDir);
+        loadOldRooms(areas)
+      }
     }
   }
 
-  function loadOldRooms(err, files) {
-    if (err) console.log(errmsg(err));
-    if (files) {
-      files.forEach((file) => {
+  function loadOldRooms(areas) {
+    console.log(areas);
+    if (areas) {
+      areas.forEach((file) => {
         oldRooms.push(yaml.safeLoad(
           fs.readFileSync(areaDir + '/' + file,
             'utf8')));
