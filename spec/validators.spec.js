@@ -21,4 +21,26 @@ describe('>>> validators:', () => {
       validators.between(1, 20)(-5).should.equal(err);
     });
   });
+
+  describe('~~~~ positive int', () => {
+
+    it('should return true if number is a positive integer', () => {
+      validators.positiveInt(2).should.be.true;
+    });
+
+    it('should return errmsg if n is negative', () => {
+      validators.positiveInt(-3).should.equal(
+        'Provide a positive integer.');
+    });
+
+    it('should return errmsg if n is NaN', () => {
+      validators.positiveInt('thomas the tank engine').should.equal(
+        'Please provide a number.');
+    });
+
+    it('should return errmsg if n is not an int', () => {
+      validators.positiveInt(3.14).should.equal(
+        'Provide an integer.');
+    });
+  });
 });
