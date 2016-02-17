@@ -63,7 +63,7 @@ function findOldRooms() {
     if (files) {
       files.forEach((file) => {
         oldRooms.push(yaml.safeLoad(
-          fs.readFileSync(areaDir + file,
+          fs.readFileSync(areaDir + '/' + file,
             'utf8')));
       });
       console.log("".concat(oldRooms).green);
