@@ -14,7 +14,7 @@ function _errmsg(err) {
 
   // if it's a `fs` error then it'll have a 'path' property
   if (err.path)
-    str += ' [' + err.path + ']'
+    str += ' [' + err.path + ']'.red;
 
-  return str.red;
+  return str;
 }
