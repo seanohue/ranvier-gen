@@ -49,12 +49,15 @@ function storeAreaNames(err, files) {
 }
 
 function getOldRooms() {
+  var areaDir = saveDir + '/' + area;
+  console.log("Looking in " + areaDir);
   for (area in oldAreas) {
-    fs.readdir(saveDir + area, storeOldRooms);
+    fs.readdir(areaDir, storeOldRooms);
   }
 }
 
 function storeOldRooms(err, files) {
+  if (err) console.log(errmsg(err));
   if (files) {
     files.forEach((file) => {
       oldRooms.push(yaml.safeLoad(
