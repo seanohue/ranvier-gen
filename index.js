@@ -16,7 +16,9 @@ const questions = require(comp + 'questions.js');
 
 // State
 var areaManifest, area;
-var roomsCreated = [];
+var newRooms = [];
+var oldAreas = [];
+var oldRooms = [];
 var exits = [];
 var saveDir = '../../entities/areas/';
 
@@ -28,21 +30,83 @@ function init() {
   console.log('\033[2J');
 }
 
+// Filesystem business
 
 function checkInstallation() {
-  fs.access(saveDir, logWarningOrGoToPrompt);
+  fs.access(saveDir, setupForPrompt);
 }
 
 
-function logWarningOrGoToPrompt(err) {
+function setupForPrompt(err) {
   if (err) {
-    console.log("Install this tool in the plugins directory of RanvierMUD for greater ease of use." + "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD.\n".purple);
+    console.log(
+      "Install this tool in the plugins directory of RanvierMUD for greater ease of use."
+      .orange +
+      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD."
+      .green +
+      "\nYou may also need to manually add exits. :(\n"
+      .purple);
     console.log(errmsg(err));
     saveDir = './areas/';
   }
+  readAreaNames();
   askAboutArea();
 }
 
+
+function readAreaNames() {
+  fs.readdir(saveDir, storeAreaNames);
+}
+
+
+function storeAreaNames(err, files) {
+  if (err) { errmsg(err); }
+  oldAreas = files.filter((file) => {
+    return file.indexOf('.') === -1;
+  });
+  // logAreas();
+  findOldRooms();
+}
+
+
+function logAreas() {
+  oldAreas.forEach((area) => { console.log("\n" + area.blue); });
+}
+
+
+function findOldRooms() {
+  if (oldAreas.length) {
+    for (var area in oldAreas) {
+      var areaDir = saveDir + oldAreas[area];
+      if (area) {
+        var areas = fs.readdirSync(areaDir);
+        loadOldRooms(areas, areaDir)
+      }
+    }
+  }
+}
+
+
+function loadOldRooms(areas, areaDir) {
+  if (areas) {
+    areas.forEach((file) => {
+      if (isRoom(file)) {
+        var roomPath = areaDir + '/' + file;
+        oldRooms.push(yaml.safeLoad(
+          fs.readFileSync(roomPath,
+            'utf8')));
+      }
+    });
+  }
+}
+
+
+function isRoom(file) {
+  return file.indexOf('.yml') && file.indexOf('manifest') < 0
+}
+
+
+// Begin the inquisition!
 
 function askAboutArea() {
   inquirer.prompt(
@@ -83,7 +147,7 @@ function createRooms(vnum, amountOfRooms) {
 
 
     function addRoomToList(exits) {
-      roomsCreated.push(
+      newRooms.push(
         new templates.Room(
           answers.title,
           vnum++,
@@ -122,11 +186,12 @@ function createRooms(vnum, amountOfRooms) {
       };
 
       exit.leaveMessage ?
-        exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
+        exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit
+        .leaveMessage;
       exits.push(exit);
 
       if (exits.length >= amountOfExits) {
-        if (roomsCreated.length === amountOfRooms)
+        if (newRooms.length === amountOfRooms)
           saveRooms();
         else
           createRooms();
@@ -164,14 +229,15 @@ function saveArea(name, levels) {
 
 function saveRooms() {
   console.log("Saving rooms...".blue);
-  roomsCreated.forEach(saveToFile);
+  newRooms.forEach(saveToFile);
   console.log("Done!".blue);
 }
 
 
 function saveToFile(entity, isArea) {
   var name = isArea ? 'manifest' : entity.title.en;
-  var pathToSaveFile = filters.filename(saveDir + filters.noSpecialChars(name) + ".yml");
+  var pathToSaveFile = filters.filename(saveDir +
+    filters.noSpecialChars(name) + ".yml");
   console.log("Saving to " + pathToSaveFile.green)
 
   fs.writeFile(
@@ -187,17 +253,17 @@ function handleSaveError(err) {
   console.error(errmsg(err));
 }
 
-
-// Messaging-related functions
+//TODO: maybe extract
 function errmsg(err) {
   var str = 'Error: '
-    // if it's a libuv error then get the description from errno 
+
+  // if it's a libuv error then get the description from errno
   if (errno.errno[err.errno])
     str += errno.errno[err.errno].description
   else
     str += err.message
 
-  // if it's a `fs` error then it'll have a 'path' property 
+  // if it's a `fs` error then it'll have a 'path' property
   if (err.path)
     str += ' [' + err.path + ']'
 
