@@ -64,12 +64,18 @@ function findOldRooms() {
 function loadOldRooms(areas, areaDir) {
   if (areas) {
     areas.forEach((file) => {
-      oldRooms.push(yaml.safeLoad(
-        fs.readFileSync(areaDir + '/' + file,
-          'utf8')));
+      if (isRoom(file)) {
+        oldRooms.push(yaml.safeLoad(
+          fs.readFileSync(areaDir + '/' + file,
+            'utf8')));
+      }
     });
   }
   console.log(oldRooms);
+}
+
+function isRoom(file) {
+  return file.indexOf('.yml') && file.indexOf('manifest') < 0
 }
 
 
