@@ -49,29 +49,27 @@ function storeAreaNames(err, files) {
 }
 
 function findOldRooms() {
-  var areaDir;
   if (oldAreas.length) {
     for (var area in oldAreas) {
-      areaDir = saveDir + oldAreas[area];
+      var areaDir = saveDir + oldAreas[area];
       console.log("Looking in " + areaDir);
       if (area) {
         var areas = fs.readdirSync(areaDir);
-        loadOldRooms(areas)
+        loadOldRooms(areas, areaDir)
       }
     }
   }
+}
 
-  function loadOldRooms(areas) {
-    console.log(areas);
-    if (areas) {
-      areas.forEach((file) => {
-        oldRooms.push(yaml.safeLoad(
-          fs.readFileSync(areaDir + '/' + file,
-            'utf8')));
-      });
-      console.log("".concat(oldRooms).green);
-    } else console.log('aint no rooms'.red);
+function loadOldRooms(areas, areaDir) {
+  if (areas) {
+    areas.forEach((file) => {
+      oldRooms.push(yaml.safeLoad(
+        fs.readFileSync(areaDir + '/' + file,
+          'utf8')));
+    });
   }
+  console.log(oldRooms);
 }
 
 
