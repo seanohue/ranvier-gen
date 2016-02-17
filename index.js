@@ -35,7 +35,7 @@ function checkInstallation() {
   fs.access(saveDir, logWarningOrGoToPrompt);
 }
 
-function getAreaNames() {
+function readAreaNames() {
   fs.readdir(saveDir, storeAreaNames);
 }
 
@@ -44,17 +44,20 @@ function storeAreaNames(err, files) {
   oldAreas = files.filter((file) => {
     return file.indexOf('.') === -1;
   });
-  oldAreas.forEach((area) => { console.log(area.blue); });
-  getOldRooms();
+  oldAreas.forEach((area) => { console.log("\n" + area.blue); });
+  findOldRooms();
 }
 
-function getOldRooms() {
+function findOldRooms() {
+  var areaDir = saveDir + '/' + area;
+  console.log("Looking in " + areaDir);
   for (area in oldAreas) {
-    fs.readdir(saveDir + area, storeOldRooms);
+    fs.readdir(areaDir, loadOldRooms);
   }
 }
 
-function storeOldRooms(err, files) {
+function loadOldRooms(err, files) {
+  if (err) console.log(errmsg(err));
   if (files) {
     files.forEach((file) => {
       oldRooms.push(yaml.safeLoad(
@@ -77,7 +80,7 @@ function logWarningOrGoToPrompt(err) {
     console.log(errmsg(err));
     saveDir = './areas/';
   }
-  getAreaNames();
+  readAreaNames();
   askAboutArea();
 }
 
@@ -160,7 +163,8 @@ function createRooms(vnum, amountOfRooms) {
       };
 
       exit.leaveMessage ?
-        exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
+        exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit
+        .leaveMessage;
       exits.push(exit);
 
       if (exits.length >= amountOfExits) {
@@ -209,9 +213,8 @@ function saveRooms() {
 
 function saveToFile(entity, isArea) {
   var name = isArea ? 'manifest' : entity.title.en;
-  var pathToSaveFile = filters.filename(saveDir + filters.noSpecialChars(
-      name) +
-    ".yml");
+  var pathToSaveFile = filters.filename(saveDir +
+    filters.noSpecialChars(name) + ".yml");
   console.log("Saving to " + pathToSaveFile.green)
 
   fs.writeFile(
@@ -227,17 +230,16 @@ function handleSaveError(err) {
   console.error(errmsg(err));
 }
 
-
-// Messaging-related functions
 function errmsg(err) {
   var str = 'Error: '
-    // if it's a libuv error then get the description from errno 
+
+  // if it's a libuv error then get the description from errno
   if (errno.errno[err.errno])
     str += errno.errno[err.errno].description
   else
     str += err.message
 
-  // if it's a `fs` error then it'll have a 'path' property 
+  // if it's a `fs` error then it'll have a 'path' property
   if (err.path)
     str += ' [' + err.path + ']'
 
