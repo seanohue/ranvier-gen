@@ -30,56 +30,14 @@ function init() {
   console.log('\033[2J');
 }
 
+// Filesystem business
 
 function checkInstallation() {
-  fs.access(saveDir, logWarningOrGoToPrompt);
-}
-
-function readAreaNames() {
-  fs.readdir(saveDir, storeAreaNames);
-}
-
-function storeAreaNames(err, files) {
-  if (err) { errmsg(err); }
-  oldAreas = files.filter((file) => {
-    return file.indexOf('.') === -1;
-  });
-  oldAreas.forEach((area) => { console.log("\n" + area.blue); });
-  findOldRooms();
-}
-
-function findOldRooms() {
-  if (oldAreas.length) {
-    for (var area in oldAreas) {
-      var areaDir = saveDir + oldAreas[area];
-      console.log("Looking in " + areaDir);
-      if (area) {
-        var areas = fs.readdirSync(areaDir);
-        loadOldRooms(areas, areaDir)
-      }
-    }
-  }
-}
-
-function loadOldRooms(areas, areaDir) {
-  if (areas) {
-    areas.forEach((file) => {
-      if (isRoom(file)) {
-        oldRooms.push(yaml.safeLoad(
-          fs.readFileSync(areaDir + '/' + file,
-            'utf8')));
-      }
-    });
-  }
-  console.log(oldRooms);
-}
-
-function isRoom(file) {
-  return file.indexOf('.yml') && file.indexOf('manifest') < 0
+  fs.access(saveDir, setupForPrompt);
 }
 
 
-function logWarningOrGoToPrompt(err) {
+function setupForPrompt(err) {
   if (err) {
     console.log(
       "Install this tool in the plugins directory of RanvierMUD for greater ease of use."
@@ -95,6 +53,60 @@ function logWarningOrGoToPrompt(err) {
   askAboutArea();
 }
 
+
+function readAreaNames() {
+  fs.readdir(saveDir, storeAreaNames);
+}
+
+
+function storeAreaNames(err, files) {
+  if (err) { errmsg(err); }
+  oldAreas = files.filter((file) => {
+    return file.indexOf('.') === -1;
+  });
+  // logAreas();
+  findOldRooms();
+}
+
+
+function logAreas() {
+  oldAreas.forEach((area) => { console.log("\n" + area.blue); });
+}
+
+
+function findOldRooms() {
+  if (oldAreas.length) {
+    for (var area in oldAreas) {
+      var areaDir = saveDir + oldAreas[area];
+      if (area) {
+        var areas = fs.readdirSync(areaDir);
+        loadOldRooms(areas, areaDir)
+      }
+    }
+  }
+}
+
+
+function loadOldRooms(areas, areaDir) {
+  if (areas) {
+    areas.forEach((file) => {
+      if (isRoom(file)) {
+        var roomPath = areaDir + '/' + file;
+        oldRooms.push(yaml.safeLoad(
+          fs.readFileSync(roomPath,
+            'utf8')));
+      }
+    });
+  }
+}
+
+
+function isRoom(file) {
+  return file.indexOf('.yml') && file.indexOf('manifest') < 0
+}
+
+
+// Begin the inquisition!
 
 function askAboutArea() {
   inquirer.prompt(
