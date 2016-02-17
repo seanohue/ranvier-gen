@@ -49,24 +49,28 @@ function storeAreaNames(err, files) {
 }
 
 function findOldRooms() {
-  console.log("Looking in " + areaDir);
-  for (area in oldAreas) {
-    var areaDir = saveDir + oldAreas[area];
-    fs.readdir(areaDir, loadOldRooms);
+  var areaDir;
+  if (oldAreas.length) {
+    for (var area in oldAreas) {
+      areaDir = saveDir + oldAreas[area];
+      console.log("Looking in " + areaDir);
+      if (area) fs.readdir(areaDir, loadOldRooms);
+    }
+  }
+
+  function loadOldRooms(err, files) {
+    if (err) console.log(errmsg(err));
+    if (files) {
+      files.forEach((file) => {
+        oldRooms.push(yaml.safeLoad(
+          fs.readFileSync(areaDir + file,
+            'utf8')));
+      });
+      console.log("".concat(oldRooms).green);
+    } else console.log('aint no rooms'.red);
   }
 }
 
-function loadOldRooms(err, files) {
-  if (err) console.log(errmsg(err));
-  if (files) {
-    files.forEach((file) => {
-      oldRooms.push(yaml.safeLoad(
-        fs.readFileSync(saveDir + area + '/' + file,
-          'utf8')));
-    });
-    console.log("".concat(oldRooms).green);
-  } else console.log('aint no rooms'.red);
-}
 
 function logWarningOrGoToPrompt(err) {
   if (err) {
@@ -230,6 +234,7 @@ function handleSaveError(err) {
   console.error(errmsg(err));
 }
 
+//TODO: maybe extract
 function errmsg(err) {
   var str = 'Error: '
 
