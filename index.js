@@ -2,7 +2,6 @@
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
 const fs = require('fs');
-const errno = require('errno');
 const colors = require('colors');
 
 
@@ -253,19 +252,3 @@ function handleSaveError(err) {
   console.error(errmsg(err));
 }
 
-//TODO: maybe extract
-function errmsg(err) {
-  var str = 'Error: '
-
-  // if it's a libuv error then get the description from errno
-  if (errno.errno[err.errno])
-    str += errno.errno[err.errno].description
-  else
-    str += err.message
-
-  // if it's a `fs` error then it'll have a 'path' property
-  if (err.path)
-    str += ' [' + err.path + ']'
-
-  return str.red
-}
