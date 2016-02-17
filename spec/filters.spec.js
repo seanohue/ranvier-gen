@@ -1,7 +1,7 @@
-var should = require('chai').should();
-var filters = require('../components/filters.js');
+const should = require('chai').should();
+const filters = require('../components/filters.js');
 
-describe('>>> filter:', () => {
+describe('>>> filters:', () => {
 
   describe('= stringify = ', () => {
 
