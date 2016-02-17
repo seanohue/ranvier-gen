@@ -11,6 +11,7 @@ const validators = require(comp + 'validators.js');
 const filters = require(comp + 'filters.js')
 const templates = require(comp + 'templates.js');
 const questions = require(comp + 'questions.js');
+const util = require(comp + 'util.js');
 
 
 // State
@@ -45,7 +46,7 @@ function setupForPrompt(err) {
       .green +
       "\nYou may also need to manually add exits. :(\n"
       .purple);
-    console.log(errmsg(err));
+    console.log(util.errmsg(err));
     saveDir = './areas/';
   }
   readAreaNames();
@@ -59,7 +60,7 @@ function readAreaNames() {
 
 
 function storeAreaNames(err, files) {
-  if (err) { errmsg(err); }
+  if (err) { util.errmsg(err); }
   oldAreas = files.filter((file) => {
     return file.indexOf('.') === -1;
   });
@@ -249,6 +250,5 @@ function saveToFile(entity, isArea) {
 
 function handleSaveError(err) {
   if (!err) return;
-  console.error(errmsg(err));
+  console.error(util.errmsg(err));
 }
-
