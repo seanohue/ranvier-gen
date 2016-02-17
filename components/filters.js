@@ -9,7 +9,7 @@ function _stringify(s) {
 }
 
 function _leaveMsg(s) {
-  return ' '.concat(_stringify(s));
+  return ' ' + _stringify(s);
 }
 
 function _filename(s) {
