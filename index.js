@@ -49,9 +49,9 @@ function storeAreaNames(err, files) {
 }
 
 function findOldRooms() {
-  var areaDir = saveDir + '/' + area;
   console.log("Looking in " + areaDir);
   for (area in oldAreas) {
+    var areaDir = saveDir + area;
     fs.readdir(areaDir, loadOldRooms);
   }
 }
