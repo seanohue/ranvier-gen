@@ -164,7 +164,7 @@ function createRooms(vnum, amountOfRooms) {
   function createExits(amountOfExits) {
     var exitQuestions = [
       questions.exitDestination,
-      questions.exitLabel,
+      questions.exitLabel(exits),
       questions.leaveMessage
     ];
 
