@@ -142,7 +142,7 @@ function createRooms(vnum, amountOfRooms) {
 
 
   function createRoom(answers) {
-    createExits(answers.numExits)
+    createExits(answers.amountOfExits);
     addRoomToList(exits);
 
 
