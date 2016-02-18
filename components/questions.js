@@ -89,11 +89,13 @@ module.exports.exitDestination = {
 };
 
 module.exports.exitLabel = (exits) => {
-  name: 'label',
-  message: 'What command will the player type for this exit?',
-  default: 'out',
-  validate: validators.unique(exits),
-  filter: filters.stringify
+  return {
+    name: 'label',
+    message: 'What command will the player type for this exit?',
+    default: 'out',
+    validate: validators.unique(exits),
+    filter: filters.stringify
+  };
 };
 
 module.exports.leaveMessage = {
