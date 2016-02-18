@@ -62,13 +62,13 @@ describe('>>> validators:', () => {
       validators.title({ what: 'isHappening' }).should.be.false;
     });
   });
-  describe('~~~~ exit label', () => {
+  describe('~~~~ unique', () => {
 
     it('should return true if input is unique', () => {
-      validators.exitLabel(['potato'])('not potato').should.be.true;
+      validators.unique(['potato'])('not potato').should.be.true;
     });
     it('should return errmsg if input is not unique', () => {
-      validators.exitLabel(['potato', 'also potato'])('potato').should
+      validators.unique(['potato', 'also potato'])('potato').should
         .equal('Provide a unique label.');
     });
   });

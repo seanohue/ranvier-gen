@@ -3,7 +3,7 @@ const filters = require('./filters.js');
 module.exports.positiveInt = _positiveInt;
 module.exports.title = _title;
 module.exports.between = _between;
-module.exports.exitLabel = _exitLabel;
+module.exports.unique = _unique;
 
 function _between(min, max) {
   return function(n) {
@@ -24,12 +24,11 @@ function _title(title) {
   return !!(title && title.toString().trim() === title);
 }
 
-// do not let pass if it is already used/pass in exit label
-function _exitLabel(exits, s) {
+function _unique(collection, s) {
   return function(s) {
     s = filters.stringify(s);
-    for (exit in exits.map(filters.stringify)) {
-      if (exits[exit] === s)
+    for (item in collection.map(filters.stringify)) {
+      if (collection[item] === s)
         return "Provide a unique label.";
     }
     return true;
