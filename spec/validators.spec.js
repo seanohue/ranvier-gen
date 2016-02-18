@@ -45,21 +45,31 @@ describe('>>> validators:', () => {
   });
 
   describe('~~~~ title', () => {
-    
+
     it('should return true if it is a non-whitespace/empty string', () => {
       validators.title('sandwichtown').should.be.true;
     });
-    
+
     it('should return false if it is empty', () => {
       validators.title('').should.be.false;
     });
-    
+
     it('should return false if it is whitespace', () => {
-      validators.title('        			').should.be.false;
+      validators.title('              ').should.be.false;
     });
-    
+
     it('should return false if it is somehow an object', () => {
       validators.title({ what: 'isHappening' }).should.be.false;
+    });
+  });
+  describe('~~~~ exit label', () => {
+
+    it('should return true if input is unique', () => {
+      validators.exitLabel(['potato'])('not potato').should.be.true;
+    });
+    it('should return errmsg if input is not unique', () => {
+      validators.exitLabel(['potato', 'also potato'])('potato').should
+        .equal('Provide a unique label.');
     });
   });
 });

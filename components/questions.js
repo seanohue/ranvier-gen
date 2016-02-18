@@ -92,7 +92,7 @@ module.exports.exitLabel = {
   name: 'label',
   message: 'What command will the player type for this exit?',
   default: 'out',
-  validate: validators.title,
+  validate: validators.exitLabel,
   filter: filters.stringify
 };
 
