@@ -160,6 +160,7 @@ function createRooms(vnum, amountOfRooms) {
 
 
   //TODO: Populate list of rooms when defining exit destination directly from ranvierMUD directory.
+  //TODO: Check to make sure that the exits don't have the same name or same destination
   function createExits(amountOfExits) {
     var exitQuestions = [
       questions.exitDestination,
