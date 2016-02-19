@@ -138,69 +138,79 @@ function createRooms(vnum, amountOfRooms) {
 
   inquirer.prompt(
     roomQuestions,
-    createRoom);
+    addRoomToLists);
 
 
-  function createRoom(answers) {
-    createExits(answers.amountOfExits);
-    addRoomToList(exits);
+  function addRoomToLists(answers) {
+    var room = new templates.Room(
+      answers.title,
+      vnum++,
+      answers.desc,
+      answers.amountOfExits,
+      area)
+    newRooms.push(room);
+    oldRooms.push(room);
 
+    logRoomLoop();
 
-    function addRoomToList(exits) {
-      newRooms.push(
-        new templates.Room(
-          answers.title,
-          vnum++,
-          answers.desc,
-          exits,
-          area));
-      exits = [];
+    function logRoomLoop() {
+      console.log("How many new rooms are there?");
+      console.log(newRooms.length);
+      console.log("How many do we need to make?");
+      console.log(amountOfRooms);
     }
+
+    if (newRooms.length === amountOfRooms) {
+      saveRooms();
+      createExits(amountOfExits);
+    } else createRooms(vnum, amountOfRooms);
+  }
+}
+
+//TODO: Add newly created rooms to list of destinations.
+//TODO: Check to make sure that the exits don't have the same destination
+
+function createExits(amountOfExits) {
+  var exitQuestions = [
+    questions.exitDestination(oldRooms),
+    questions.exitLabel(exits),
+    questions.leaveMessage
+  ];
+
+  for (room in newRooms) {
+    inquireAboutExits(newRooms[room]);
   }
 
+  function inquireAboutExits(room) {
+    inquirer.prompt(
+      exitQuestions,
+      createExit(room));
+  }
 
-  //TODO: Populate list of rooms when defining exit destination directly from ranvierMUD directory.
-  //TODO: Check to make sure that the exits don't have the same name or same destination
-  function createExits(amountOfExits) {
-    var exitQuestions = [
-      questions.exitDestination(oldRooms),
-      questions.exitLabel(exits),
-      questions.leaveMessage
-    ];
+  function createExit(room) {
+    var exitsToCreate;
+    if (!isNaN(rooms.exits))
+      exitsToCreate = rooms.exits;
 
-    createExit();
-
-
-    function createExit() { // better name needed
-      console.log("Creating exits...".blue);
-      inquirer.prompt(
-        exitQuestions,
-        addExit);
-    }
-
-
-    function addExit(answers) {
+    return (answers) => {
       var exit = {
         location: answers.destination,
         direction: answers.label,
         leaveMessage: answers.leaveMessage
       };
 
-      exit.leaveMessage ?
-        exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit
-        .leaveMessage;
-      exits.push(exit);
+      exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) :
+        delete exit.leaveMessage;
 
-      if (exits.length >= amountOfExits) {
-        if (newRooms.length === amountOfRooms)
-          saveRooms();
-        else
-          createRooms();
-      } else
-        createExit();
+      room.exits.push(exit);
+      if (--exitsToCreate) {
+        inquireAboutExits(room);
+      }
     }
   }
 }
+
+
 
 /*
 ///// Saving...
