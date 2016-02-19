@@ -4,7 +4,6 @@ module.exports.errmsg = _errmsg;
 module.exports.getRoomLabels = _getRoomLabels;
 
 function _getRoomLabels(rooms) {
-  console.log("ROOMS ARE ", rooms);
   if (rooms) {
     return rooms.map((room) => {
       if (Array.isArray(room)) 
