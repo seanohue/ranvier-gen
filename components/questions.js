@@ -103,6 +103,5 @@ module.exports.leaveMessage = {
   name: 'leaveMessage',
   message: 'What do you want to be broadcast to the room when players leave? (optional)',
   default: ' leaves.',
-  validate: validators.title,
   filter: filters.leaveMsg
 };
