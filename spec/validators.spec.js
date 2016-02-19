@@ -79,5 +79,13 @@ describe('>>> validators:', () => {
       validators.hasUnique('direction', mockExits)('in').should
         .equal('Provide a unique label.');
     });
+
+    it('should throw an error if implemented poorly', () => {
+      (function() {
+        validators.hasUnique(mockExits)('burrito town');
+      }).should.throw(
+        '>>> hasUnique validator requires a string as the first argument and an array of objects as the second argument.'
+      );
+    });
   });
 });

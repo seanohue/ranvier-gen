@@ -26,7 +26,7 @@ function _title(title) {
 
 function _hasUnique(key, collection, s) {
   return function(s) {
-    if (key) {
+    if (String(key) === key && collection) {
       s = filters.stringify(s);
       for (item in collection) {
         if (filters.stringify(collection[item][key]) === s)
@@ -34,5 +34,8 @@ function _hasUnique(key, collection, s) {
       }
       return true;
     }
+    throw new Error(
+      '>>> hasUnique validator requires a string as the first argument and an array of objects as the second argument.'
+    );
   }
 }
