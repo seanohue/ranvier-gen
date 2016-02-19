@@ -4,9 +4,16 @@ module.exports.errmsg = _errmsg;
 module.exports.getRoomLabels = _getRoomLabels;
 
 function _getRoomLabels(rooms) {
-  return rooms.map((room) => {
-    return room.title.en;
-  });
+  console.log("ROOMS ARE ", rooms);
+  if (rooms) {
+    return rooms.map((room) => {
+      if (Array.isArray(room)) 
+        return _getRoomLabels(room);
+      else if (room.title) {
+        return room.title.en;
+      }
+    });
+  }
 }
 
 function _errmsg(err) {

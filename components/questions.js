@@ -84,7 +84,7 @@ module.exports.amountOfExits = {
 module.exports.exitDestination = (rooms) => {
   return {
     type: 'list',
-    choices: util.getRoomLabels(rooms)
+    choices: util.getRoomLabels(rooms),
     name: 'destination',
     message: 'Which other room will this exit connect to? Enter a valid location number.',
     default: 1,
