@@ -67,4 +67,19 @@ describe('>>> filters:', () => {
     });
   });
 
+  describe('*** get room vnum from label ***', () => {
+    it('should return the vnum from the room\'s list label', () => {
+      filters.getRoomVnum('Burritoville (1)').should.equal(1);
+    });
+
+    it('should work for 2 digit numbers', () => {
+      filters.getRoomVnum('Burritoville (10)').should.equal(10);
+    });
+
+    it('should work for very large numbers', () => {
+      filters.getRoomVnum('Burritoville (13377331)').should.equal(
+        13377331);
+    });
+  });
+
 });

@@ -5,8 +5,11 @@ module.exports.leaveMsg = _leaveMsg;
 module.exports.noSpecialChars = _noSpecialChars;
 module.exports.getRoomVnum = _getRoomVnum;
 
-function _getRoomVnum(room){
-
+function _getRoomVnum(room) {
+  var beginVnum = room.indexOf('(') + 1;
+  var endVnum = room.indexOf(')');
+  return Number(room.slice(beginVnum,
+    endVnum));
 }
 
 function _stringify(s) {
