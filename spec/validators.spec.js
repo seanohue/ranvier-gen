@@ -63,12 +63,19 @@ describe('>>> validators:', () => {
     });
   });
   describe('~~~~ unique', () => {
+    var mockExits = [{
+      direction: 'out',
+    }, {
+      direction: 'in',
+    }];
 
     it('should return true if input is unique', () => {
-      validators.unique(['potato'])('not potato').should.be.true;
+
+      validators.unique(mockExits)('potato').should.be.true;
     });
     it('should return errmsg if input is not unique', () => {
-      validators.unique(['potato', 'also potato'])('potato').should
+
+      validators.unique(mockExits)('in').should
         .equal('Provide a unique label.');
     });
   });

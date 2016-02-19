@@ -89,6 +89,7 @@ module.exports.exitDestination = {
 };
 
 module.exports.exitLabel = (exits) => {
+  console.log("exits");
   return {
     name: 'label',
     message: 'What command will the player type for this exit?',

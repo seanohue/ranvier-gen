@@ -27,8 +27,8 @@ function _title(title) {
 function _unique(collection, s) {
   return function(s) {
     s = filters.stringify(s);
-    for (item in collection.map(filters.stringify)) {
-      if (collection[item] === s)
+    for (item in collection) {
+      if (filters.stringify(collection[item].direction) === s)
         return "Provide a unique label.";
     }
     return true;
