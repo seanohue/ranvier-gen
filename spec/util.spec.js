@@ -17,7 +17,7 @@ describe('!! UTIL', () => {
       }, ];
       var expectedLabels = ['pants (1)', 'helicopter (2)'];
 
-      util.getRoomLabels(mockRooms).should.eql(expectedLabels);
+      util.getRoomLabels(mockRooms)().should.eql(expectedLabels);
     });
 
     it('should handle nested arrays', () => {
@@ -33,11 +33,11 @@ describe('!! UTIL', () => {
           location: 3
         }]
       ];
-      var expectedLabels = ['pants (1)', ['helicopter (2)',
+      var expectedLabels = ['pants (1)', 'helicopter (2)',
         'burrito (3)'
-      ]];
+      ];
 
-      util.getRoomLabels(mockRooms).should.eql(expectedLabels);
+      util.getRoomLabels(mockRooms)().should.eql(expectedLabels);
     });
   });
 });

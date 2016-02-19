@@ -82,12 +82,12 @@ module.exports.amountOfExits = {
 */
 
 module.exports.exitDestination = (rooms) => {
+  console.log('Rooms are ', rooms);
   return {
     type: 'list',
     choices: util.getRoomLabels(rooms),
     name: 'destination',
-    message: 'Which other room will this exit connect to? Enter a valid location number.',
-    default: 1,
+    message: 'Which other room will this exit connect to?',
     filter: filters.getRoomVnum
   };
 }
