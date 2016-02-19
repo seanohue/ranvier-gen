@@ -146,12 +146,12 @@ function createRooms(vnum, amountOfRooms) {
       answers.title,
       vnum++,
       answers.desc,
-      answers.amountOfExits,
+      answers.numExits,
       area)
     newRooms.push(room);
     oldRooms.push(room);
 
-    logRoomLoop();
+    // logRoomLoop();
 
     function logRoomLoop() {
       console.log("How many new rooms are there?");
@@ -162,7 +162,7 @@ function createRooms(vnum, amountOfRooms) {
 
     if (newRooms.length === amountOfRooms) {
       saveRooms();
-      createExits(amountOfExits);
+      createExits(answers.numExits);
     } else createRooms(vnum, amountOfRooms);
   }
 }
@@ -178,6 +178,7 @@ function createExits(amountOfExits) {
   ];
 
   for (room in newRooms) {
+    console.log("Creating exits for " + newRooms[room].title.en + ":".blue);
     inquireAboutExits(newRooms[room]);
   }
 
@@ -189,7 +190,7 @@ function createExits(amountOfExits) {
 
   function createExit(room) {
     var exitsToCreate;
-    if (!isNaN(rooms.exits))
+    if (!isNaN(room.exits))
       exitsToCreate = rooms.exits;
 
     return (answers) => {
@@ -246,6 +247,7 @@ function saveRooms() {
 
 
 function saveToFile(entity, isArea) {
+  console.log(entity);
   var name = isArea ? 'manifest' : entity.title.en;
   var pathToSaveFile = filters.filename(saveDir +
     filters.noSpecialChars(name) + ".yml");
