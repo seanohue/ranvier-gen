@@ -9,12 +9,7 @@ function _getRoomLabels(rooms) {
     if (rooms) {
       rooms = _flatten(rooms);
       return rooms.map((room) => {
-        if (Array.isArray(room)) {
-          return _getRoomLabels(room);
-        } else if (room.title) {
-          console.log(room.title.en);
-          return room.title.en + ' (' + room.location + ')';
-        }
+        return room.title.en + ' (' + room.location + ')';
       });
     }
   }
