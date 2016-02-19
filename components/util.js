@@ -10,7 +10,7 @@ function _getRoomLabels(rooms) {
       if (Array.isArray(room)) 
         return _getRoomLabels(room);
       else if (room.title) {
-        return room.title.en;
+        return room.title.en + ' (' + room.location + ')';
       }
     });
   }

@@ -3,6 +3,11 @@ module.exports.en = _en;
 module.exports.filename = _filename;
 module.exports.leaveMsg = _leaveMsg;
 module.exports.noSpecialChars = _noSpecialChars;
+module.exports.getRoomVnum = _getRoomVnum;
+
+function _getRoomVnum(room){
+
+}
 
 function _stringify(s) {
   return String(s).trim();

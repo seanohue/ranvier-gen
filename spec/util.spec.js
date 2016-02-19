@@ -5,29 +5,37 @@ describe('!! UTIL', () => {
 
   describe('!!!! get room labels', () => {
 
-    it('should return an array of just the titles of a room', () => {
+    it('should return an array of the room titles and vnums', () => {
 
       var mockRooms = [{
-        title: { en: 'pants' }
+        title: { en: 'pants' },
+        location: 1
       }, {
-        title: { en: 'helicopter' }
+        title: { en: 'helicopter' },
+        location: 2
+
       }, ];
-      var expectedLabels = ['pants', 'helicopter'];
+      var expectedLabels = ['pants (1)', 'helicopter (2)'];
 
       util.getRoomLabels(mockRooms).should.eql(expectedLabels);
     });
 
     it('should handle nested arrays', () => {
       var mockRooms = [{
-          title: { en: 'pants' }
+          title: { en: 'pants' },
+          location: 1
         },
         [{
-          title: { en: 'helicopter' }
+          title: { en: 'helicopter' },
+          location: 2
         }, {
-          title: { en: 'burrito' }
+          title: { en: 'burrito' },
+          location: 3
         }]
       ];
-      var expectedLabels = ['pants', ['helicopter', 'burrito']];
+      var expectedLabels = ['pants (1)', ['helicopter (2)',
+        'burrito (3)'
+      ]];
 
       util.getRoomLabels(mockRooms).should.eql(expectedLabels);
     });
