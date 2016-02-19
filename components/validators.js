@@ -1,6 +1,9 @@
+const filters = require('./filters.js');
+
 module.exports.positiveInt = _positiveInt;
 module.exports.title = _title;
 module.exports.between = _between;
+module.exports.hasUnique = _hasUnique;
 
 function _between(min, max) {
   return function(n) {
@@ -19,4 +22,17 @@ function _positiveInt(n) {
 
 function _title(title) {
   return !!(title && title.toString().trim() === title);
+}
+
+function _hasUnique(key, collection, s) {
+  return function(s) {
+    if (key) {
+      s = filters.stringify(s);
+      for (item in collection) {
+        if (filters.stringify(collection[item][key]) === s)
+          return "Provide a unique label.";
+      }
+      return true;
+    }
+  }
 }
