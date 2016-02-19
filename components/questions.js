@@ -88,18 +88,20 @@ module.exports.exitDestination = {
   filter: Number
 };
 
-module.exports.exitLabel = {
-  name: 'label',
-  message: 'What command will the player type for this exit?',
-  default: 'out',
-  validate: validators.title,
-  filter: filters.stringify
+module.exports.exitLabel = (exits) => {
+  console.log("exits");
+  return {
+    name: 'label',
+    message: 'What command will the player type for this exit?',
+    default: 'out',
+    validate: validators.hasUnique('direction', exits),
+    filter: filters.stringify
+  };
 };
 
 module.exports.leaveMessage = {
   name: 'leaveMessage',
   message: 'What do you want to be broadcast to the room when players leave? (optional)',
   default: ' leaves.',
-  validate: validators.title,
   filter: filters.leaveMsg
 };
