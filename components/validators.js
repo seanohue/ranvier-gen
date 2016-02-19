@@ -3,7 +3,7 @@ const filters = require('./filters.js');
 module.exports.positiveInt = _positiveInt;
 module.exports.title = _title;
 module.exports.between = _between;
-module.exports.unique = _unique;
+module.exports.hasUnique = _hasUnique;
 
 function _between(min, max) {
   return function(n) {
@@ -24,13 +24,15 @@ function _title(title) {
   return !!(title && title.toString().trim() === title);
 }
 
-function _unique(collection, s) {
+function _hasUnique(key, collection, s) {
   return function(s) {
-    s = filters.stringify(s);
-    for (item in collection) {
-      if (filters.stringify(collection[item].direction) === s)
-        return "Provide a unique label.";
+    if (key) {
+      s = filters.stringify(s);
+      for (item in collection) {
+        if (filters.stringify(collection[item][key]) === s)
+          return "Provide a unique label.";
+      }
+      return true;
     }
-    return true;
   }
 }
