@@ -24,8 +24,13 @@ Right now it's not super user-friendly so you have to make sure you enter the co
 
 ranvier-gen uses [JS-YAML](https://github.com/nodeca/js-yaml) for parsing and [inquirer.js](https://github.com/SBoudrias/Inquirer.js/) for command-line prompts.
 
-### Development
+### Contribution
 
-This is still in beta form, at best. Please write good code. Also, test your code. This uses mocha.
+This is still in beta form, at best. 
+Please write good code. 
+Also, test your code. 
+This uses mocha.
 
 Run tests using `mocha spec` in the root directory.
+
+I am also trying to ES6-ify this, slowly, using whatever features get added to node.

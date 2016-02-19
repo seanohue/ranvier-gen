@@ -2,6 +2,7 @@ const moduleDir = './';
 const validators = require(moduleDir + 'validators.js');
 const filters = require(moduleDir + 'filters.js')
 const templates = require(moduleDir + 'templates.js');
+const util =  require(moduleDir + 'util.js');
 
 
 /*
@@ -80,16 +81,20 @@ module.exports.amountOfExits = {
 ///// Exit Questions
 */
 
-module.exports.exitDestination = {
-  name: 'destination',
-  message: 'Which other room will this exit connect to? Enter a valid location number.',
-  default: 1,
-  validate: validators.positiveInt,
-  filter: Number
-};
+module.exports.exitDestination = (rooms) => {
+  console.log('Rooms are ', rooms);
+  return {
+    type: 'list',
+    choices: util.getRoomLabels(rooms),
+    name: 'destination',
+    message: 'Which other room will this exit connect to?',
+    filter: filters.getRoomVnum
+  };
+}
+
+util.getRoomLabels()
 
 module.exports.exitLabel = (exits) => {
-  console.log("exits");
   return {
     name: 'label',
     message: 'What command will the player type for this exit?',

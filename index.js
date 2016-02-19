@@ -163,7 +163,7 @@ function createRooms(vnum, amountOfRooms) {
   //TODO: Check to make sure that the exits don't have the same name or same destination
   function createExits(amountOfExits) {
     var exitQuestions = [
-      questions.exitDestination,
+      questions.exitDestination(oldRooms),
       questions.exitLabel(exits),
       questions.leaveMessage
     ];
@@ -239,7 +239,6 @@ function saveToFile(entity, isArea) {
   var name = isArea ? 'manifest' : entity.title.en;
   var pathToSaveFile = filters.filename(saveDir +
     filters.noSpecialChars(name) + ".yml");
-  console.log("Saving to " + pathToSaveFile.green)
 
   fs.writeFile(
     pathToSaveFile,
