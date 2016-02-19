@@ -191,7 +191,7 @@ function createExits(amountOfExits) {
   function createExit(room) {
     var exitsToCreate;
     if (!isNaN(room.exits))
-      exitsToCreate = rooms.exits;
+      exitsToCreate = room.exits;
 
     return (answers) => {
       var exit = {
