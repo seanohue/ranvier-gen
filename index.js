@@ -163,7 +163,7 @@ function createRooms(vnum, amountOfRooms) {
   //TODO: Check to make sure that the exits don't have the same name or same destination
   function createExits(amountOfExits) {
     var exitQuestions = [
-      questions.exitDestination,
+      questions.exitDestination(oldRooms),
       questions.exitLabel(exits),
       questions.leaveMessage
     ];

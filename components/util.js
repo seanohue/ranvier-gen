@@ -1,6 +1,13 @@
 const errno = require('errno');
 
 module.exports.errmsg = _errmsg;
+module.exports.getRoomLabels = _getRoomLabels;
+
+function _getRoomLabels(rooms) {
+  return rooms.map((room) => {
+    return room.title.en;
+  });
+}
 
 function _errmsg(err) {
   var str = 'Error: '
