@@ -88,7 +88,7 @@ module.exports.exitDestination = (rooms) => {
     name: 'destination',
     message: 'Which other room will this exit connect to? Enter a valid location number.',
     default: 1,
-    filter: getRoomVnum
+    filter: filters.getRoomVnum
   };
 }
 
