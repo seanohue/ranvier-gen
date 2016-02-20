@@ -151,12 +151,9 @@ function createRooms(vnum, amountOfRooms) {
       answers.numExits,
       area)
 
-    if (!room) throw "Seriously what the fuck"
-
-    console.log(room);
     newRooms.push(room);
     oldRooms.push(room);
-    logRoomLoop();
+    // logRoomLoop();
 
     function logRoomLoop() {
       console.log("How many new rooms are there?");
@@ -170,7 +167,7 @@ function createRooms(vnum, amountOfRooms) {
     }
 
     if (newRooms.length === amountOfRooms) {
-      // saveRooms();
+      // saveRooms(); // do after exits?
       createExits(answers.numExits);
     } else createRooms(vnum, amountOfRooms);
   }
@@ -199,7 +196,7 @@ function createExits(amountOfExits) {
 
   function createExit(room) {
     var exitsToCreate;
-    
+
     if (!isNaN(room.exits)) {
       exitsToCreate = room.exits;
       room.exits = [];
@@ -218,7 +215,7 @@ function createExits(amountOfExits) {
       room.exits.push(exit);
       if (--exitsToCreate) {
         inquireAboutExits(room);
-      }
+      } else saveRooms();
     }
   }
 }
@@ -227,7 +224,6 @@ function createExits(amountOfExits) {
 
 /*
 ///// Saving...
-/////TODO: Save directly to ranvierMUD areas when installed as plugin.
 /////TODO: Extract into module, probably.
 */
 
