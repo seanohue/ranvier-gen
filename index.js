@@ -92,9 +92,11 @@ function loadOldRooms(areas, areaDir) {
     areas.forEach((file) => {
       if (isRoom(file)) {
         var roomPath = areaDir + '/' + file;
-        oldRooms.push(yaml.safeLoad(
+        var room = yaml.safeLoad(
           fs.readFileSync(roomPath,
-            'utf8')));
+            'utf8'))
+        if (room)
+          oldRooms.push(room);
       }
     });
   }
@@ -138,73 +140,89 @@ function createRooms(vnum, amountOfRooms) {
 
   inquirer.prompt(
     roomQuestions,
-    createRoom);
+    addRoomToLists);
 
 
-  function createRoom(answers) {
-    createExits(answers.amountOfExits);
-    addRoomToList(exits);
+  function addRoomToLists(answers) {
+    var room = new templates.Room(
+      answers.title,
+      vnum++,
+      answers.desc,
+      answers.numExits,
+      area)
 
+    newRooms.push(room);
+    oldRooms.push(room);
+    // logRoomLoop();
 
-    function addRoomToList(exits) {
-      newRooms.push(
-        new templates.Room(
-          answers.title,
-          vnum++,
-          answers.desc,
-          exits,
-          area));
-      exits = [];
+    function logRoomLoop() {
+      console.log("How many new rooms are there?");
+      console.log(newRooms.length);
+      console.log("How many do we need to make?");
+      console.log(amountOfRooms);
+      console.log("New rooms:");
+      console.log(newRooms);
+      console.log("Old rooms:");
+      console.log(oldRooms);
     }
+
+    if (newRooms.length === amountOfRooms) {
+      createExits();
+    } else createRooms(vnum, amountOfRooms);
+  }
+}
+
+//TODO: Add newly created rooms to list of destinations.
+//TODO: Check to make sure that the exits don't have the same destination
+
+function createExits() {
+  var exitQuestions = [
+    questions.exitDestination(oldRooms),
+    questions.exitLabel(exits),
+    questions.leaveMessage
+  ];
+
+  inquireAboutExits(newRooms.shift());
+
+  function inquireAboutExits(room) {
+    console.log("Creating exits for " + room.title.en + ":".blue);
+    inquirer.prompt(
+      exitQuestions,
+      createExit(room));
   }
 
+  function createExit(room) {
+    var exitsToCreate;
 
-  //TODO: Populate list of rooms when defining exit destination directly from ranvierMUD directory.
-  //TODO: Check to make sure that the exits don't have the same name or same destination
-  function createExits(amountOfExits) {
-    var exitQuestions = [
-      questions.exitDestination(oldRooms),
-      questions.exitLabel(exits),
-      questions.leaveMessage
-    ];
-
-    createExit();
-
-
-    function createExit() { // better name needed
-      console.log("Creating exits...".blue);
-      inquirer.prompt(
-        exitQuestions,
-        addExit);
+    if (!isNaN(room.exits)) {
+      exitsToCreate = room.exits;
+      room.exits = [];
     }
 
+    return (answers) => {
+      if (newRooms.length) {
+        var exit = {
+          location: answers.destination,
+          direction: answers.label,
+          leaveMessage: answers.leaveMessage
+        };
 
-    function addExit(answers) {
-      var exit = {
-        location: answers.destination,
-        direction: answers.label,
-        leaveMessage: answers.leaveMessage
-      };
+        exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) :
+          delete exit.leaveMessage;
 
-      exit.leaveMessage ?
-        exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit
-        .leaveMessage;
-      exits.push(exit);
-
-      if (exits.length >= amountOfExits) {
-        if (newRooms.length === amountOfRooms)
-          saveRooms();
-        else
-          createRooms();
-      } else
-        createExit();
+        room.exits.push(exit);
+        if (exitsToCreate--)
+          inquireAboutExits(room);
+        else inquireAboutExits(newRooms.shift());
+      } else saveRooms();
     }
   }
 }
 
+
+
 /*
 ///// Saving...
-/////TODO: Save directly to ranvierMUD areas when installed as plugin.
 /////TODO: Extract into module, probably.
 */
 
@@ -236,6 +254,7 @@ function saveRooms() {
 
 
 function saveToFile(entity, isArea) {
+  console.log(entity);
   var name = isArea ? 'manifest' : entity.title.en;
   var pathToSaveFile = filters.filename(saveDir +
     filters.noSpecialChars(name) + ".yml");
