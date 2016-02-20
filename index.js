@@ -185,7 +185,8 @@ function createExits() {
   inquireAboutExits(newRooms.shift());
 
   function inquireAboutExits(room) {
-    console.log("Creating exits for " + room.title.en + ":".blue);
+    var exitMsg = "Creating exits for " + room.title.en + ":";
+    console.log(exitMsg.blue);
     inquirer.prompt(
       exitQuestions,
       createExit(room));
@@ -193,6 +194,7 @@ function createExits() {
 
   function createExit(room) {
     var exitsToCreate;
+    var roomsCreated = newRooms;
 
     if (!isNaN(room.exits)) {
       exitsToCreate = room.exits;
@@ -200,7 +202,7 @@ function createExits() {
     }
 
     return (answers) => {
-      if (newRooms.length) {
+      if (roomsCreated.length) {
         var exit = {
           location: answers.destination,
           direction: answers.label,
@@ -213,7 +215,7 @@ function createExits() {
         room.exits.push(exit);
         if (exitsToCreate--)
           inquireAboutExits(room);
-        else inquireAboutExits(newRooms.shift());
+        else inquireAboutExits(roomsCreated.shift());
       } else saveRooms();
     }
   }
@@ -254,7 +256,6 @@ function saveRooms() {
 
 
 function saveToFile(entity, isArea) {
-  console.log(entity);
   var name = isArea ? 'manifest' : entity.title.en;
   var pathToSaveFile = filters.filename(saveDir +
     filters.noSpecialChars(name) + ".yml");
