@@ -21,6 +21,7 @@ var oldAreas = [];
 var oldRooms = [];
 var exits = [];
 var saveDir = '../../entities/areas/';
+var startingVnum;
 
 init();
 
@@ -80,7 +81,7 @@ function findOldRooms() {
       var areaDir = saveDir + oldAreas[area];
       if (area) {
         var areas = fs.readdirSync(areaDir);
-        loadOldRooms(areas, areaDir)
+        loadOldRooms(areas, areaDir);
       }
     }
   }
@@ -107,14 +108,12 @@ function isRoom(file) {
   return file.indexOf('.yml') && file.indexOf('manifest') < 0
 }
 
-
 // Begin the inquisition!
 
 function askAboutArea() {
   inquirer.prompt(
     [
       questions.howManyRooms,
-      questions.startingLocation,
       questions.areaName,
       questions.areaLevelMin,
       questions.areaLevelMax
@@ -127,11 +126,19 @@ function createArea(answers) {
   var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
 
   saveArea(answers.areaName, suggestedLevels);
-  createRooms(answers.start, answers.amount);
+  createRooms(null, answers.amount);
+}
+
+
+function getStartingVnum() {
+  var max = util.flatten(oldRooms).reduce((prev, current) => (prev.location >
+    current.location) ? prev : current);
+  return max.location + 1;
 }
 
 
 function createRooms(vnum, amountOfRooms) {
+  vnum = vnum || getStartingVnum();
   var roomQuestions = [
     questions.titleRoom,
     questions.describeRoom,
