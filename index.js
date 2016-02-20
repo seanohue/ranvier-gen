@@ -167,8 +167,7 @@ function createRooms(vnum, amountOfRooms) {
     }
 
     if (newRooms.length === amountOfRooms) {
-      // saveRooms(); // do after exits?
-      createExits(answers.numExits);
+      createExits();
     } else createRooms(vnum, amountOfRooms);
   }
 }
@@ -176,19 +175,17 @@ function createRooms(vnum, amountOfRooms) {
 //TODO: Add newly created rooms to list of destinations.
 //TODO: Check to make sure that the exits don't have the same destination
 
-function createExits(amountOfExits) {
+function createExits() {
   var exitQuestions = [
     questions.exitDestination(oldRooms),
     questions.exitLabel(exits),
     questions.leaveMessage
   ];
 
-  for (room in newRooms) {
-    console.log("Creating exits for " + newRooms[room].title.en + ":".blue);
-    inquireAboutExits(newRooms[room]);
-  }
+  inquireAboutExits(newRooms.shift());
 
   function inquireAboutExits(room) {
+    console.log("Creating exits for " + room.title.en + ":".blue);
     inquirer.prompt(
       exitQuestions,
       createExit(room));
@@ -203,18 +200,20 @@ function createExits(amountOfExits) {
     }
 
     return (answers) => {
-      var exit = {
-        location: answers.destination,
-        direction: answers.label,
-        leaveMessage: answers.leaveMessage
-      };
+      if (newRooms.length) {
+        var exit = {
+          location: answers.destination,
+          direction: answers.label,
+          leaveMessage: answers.leaveMessage
+        };
 
-      exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) :
-        delete exit.leaveMessage;
+        exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) :
+          delete exit.leaveMessage;
 
-      room.exits.push(exit);
-      if (--exitsToCreate) {
-        inquireAboutExits(room);
+        room.exits.push(exit);
+        if (exitsToCreate--)
+          inquireAboutExits(room);
+        else inquireAboutExits(newRooms.shift());
       } else saveRooms();
     }
   }
