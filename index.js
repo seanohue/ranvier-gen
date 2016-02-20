@@ -92,9 +92,11 @@ function loadOldRooms(areas, areaDir) {
     areas.forEach((file) => {
       if (isRoom(file)) {
         var roomPath = areaDir + '/' + file;
-        oldRooms.push(yaml.safeLoad(
+        var room = yaml.safeLoad(
           fs.readFileSync(roomPath,
-            'utf8')));
+            'utf8'))
+        if (room)
+          oldRooms.push(room);
       }
     });
   }
@@ -148,20 +150,27 @@ function createRooms(vnum, amountOfRooms) {
       answers.desc,
       answers.numExits,
       area)
+
+    if (!room) throw "Seriously what the fuck"
+
+    console.log(room);
     newRooms.push(room);
     oldRooms.push(room);
-
-    // logRoomLoop();
+    logRoomLoop();
 
     function logRoomLoop() {
       console.log("How many new rooms are there?");
       console.log(newRooms.length);
       console.log("How many do we need to make?");
       console.log(amountOfRooms);
+      console.log("New rooms:");
+      console.log(newRooms);
+      console.log("Old rooms:");
+      console.log(oldRooms);
     }
 
     if (newRooms.length === amountOfRooms) {
-      saveRooms();
+      // saveRooms();
       createExits(answers.numExits);
     } else createRooms(vnum, amountOfRooms);
   }
@@ -190,8 +199,11 @@ function createExits(amountOfExits) {
 
   function createExit(room) {
     var exitsToCreate;
-    if (!isNaN(room.exits))
+    
+    if (!isNaN(room.exits)) {
       exitsToCreate = room.exits;
+      room.exits = [];
+    }
 
     return (answers) => {
       var exit = {
