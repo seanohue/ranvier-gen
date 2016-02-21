@@ -37,7 +37,7 @@ module.exports.areaLevelMax = {
   name: "levelMax",
   message: "What is the highest recommended player level for this area?",
   default: 99,
-  validate: validators.positiveInt,
+  validate: validators.between(1, 99),
   filter: filters.stringify
 };
 
