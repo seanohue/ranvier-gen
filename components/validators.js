@@ -7,7 +7,8 @@ module.exports.hasUnique = _hasUnique;
 
 function _between(min, max) {
   return function(n) {
-    if (isNaN(n)) return "Please provide a number";
+    var pos = _positiveInt(n);
+    if (pos !== true) return pos;
     return (n >= min && n <= max) ? true : "Please provide a number between " +
       min + " and " + max + ".";
   }
