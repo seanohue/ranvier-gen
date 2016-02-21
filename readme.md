@@ -18,7 +18,7 @@ This works with any terminals that [inquirer.js](https://github.com/SBoudrias/In
 Type `node index.js` to get started.
 Answer the questions and it will auto-save [YAML](http://yaml.org/) files for RanvierMUD rooms to the areas directory.
 
-Right now it's not super user-friendly so you have to make sure you enter the correct numbers for location IDs.
+As of right now, only adding new areas is supported. Adding rooms to previous areas must be done manually.
 
 ### Dependencies
 
@@ -27,10 +27,8 @@ ranvier-gen uses [JS-YAML](https://github.com/nodeca/js-yaml) for parsing and [i
 ### Contribution
 
 This is still in beta form, at best. 
-Please write good code. 
-Also, test your code. 
+I use JS-beautify for code formatting since I'm lazy.
+The preferences for formatting are saved in the root of this project.
 This uses mocha.
 
 Run tests using `mocha spec` in the root directory.
-
-I am also trying to ES6-ify this, slowly, using whatever features get added to node.
