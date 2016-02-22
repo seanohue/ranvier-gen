@@ -129,6 +129,7 @@ function createArea(answers) {
 
 
 function getStartingVnum() {
+  if (!oldRooms.length) return 1;
   var max = util.flatten(oldRooms).reduce((prev, current) => (prev.location >
     current.location) ? prev : current);
   return max.location + 1;
@@ -248,7 +249,7 @@ function saveArea(name, levels) {
   );
 
   fs.mkdir(saveDir, function handleMkDir(err) {
-    if (err) { util.error(err); }
+    if (err) util.error('\n' + util.errmsg(err));
     saveToFile(areaManifest, true);
   });
 
