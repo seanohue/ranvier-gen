@@ -1,8 +1,26 @@
 const errno = require('errno');
+const chalk = require('chalk');
+
 
 module.exports.errmsg = _errmsg;
 module.exports.getRoomLabels = _getRoomLabels;
 module.exports.flatten = _flatten;
+module.exports.error = _error;
+module.exports.update = _update;
+module.exports.debug = _debug;
+
+
+function _error(err) {
+  console.log(chalk.bold.red(err));
+}
+
+function _update(msg) {
+  console.log(chalk.blue.underline.bold(msg));
+}
+
+function _debug(msg) {
+  console.log(chalk.white.blueBg(msg));
+}
 
 function _getRoomLabels(rooms) {
   return function() {
