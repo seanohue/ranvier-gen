@@ -17,14 +17,6 @@ module.exports.howManyRooms = {
   filter: Number
 };
 
-module.exports.startingLocation = {
-  name: 'start',
-  message: 'What is the location # (vnum) you would like these rooms to start with?',
-  default: 1,
-  validate: validators.positiveInt,
-  filter: Number
-};
-
 module.exports.areaLevelMin = {
   name: "levelMin",
   message: "What is the lowest recommended player level for this area?",

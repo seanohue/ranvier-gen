@@ -15,6 +15,7 @@ const util = require(comp + 'util.js');
 
 
 // State
+const debug = false;
 var areaManifest, area;
 var newRooms = [];
 var oldAreas = [];
@@ -65,7 +66,7 @@ function storeAreaNames(err, files) {
   oldAreas = files.filter((file) => {
     return file.indexOf('.') === -1;
   });
-  // logAreas();
+  if (debug) logAreas();
   findOldRooms();
 }
 
@@ -160,7 +161,7 @@ function createRooms(vnum, amountOfRooms) {
 
     newRooms.push(room);
     oldRooms.push(room);
-    // logRoomLoop();
+    if (debug) logRoomLoop();
 
     function logRoomLoop() {
       console.log("How many new rooms are there?");
@@ -206,6 +207,7 @@ function createExits() {
     if (!isNaN(room.exits)) {
       exitsToCreate = room.exits;
       room.exits = [];
+      exits = [];
     }
 
     return (answers) => {
@@ -219,7 +221,9 @@ function createExits() {
         exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) :
           delete exit.leaveMessage;
 
+        exits.push(exit);
         room.exits.push(exit);
+        
         if (exitsToCreate--)
           inquireAboutExits(room);
         else inquireAboutExits(roomsCreated.shift());
