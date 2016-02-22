@@ -2,7 +2,6 @@
 const inquirer = require('inquirer');
 const yaml = require('js-yaml');
 const fs = require('fs');
-const colors = require('colors');
 
 
 // Custom modules
@@ -41,14 +40,12 @@ function checkInstallation() {
 
 function setupForPrompt(err) {
   if (err) {
-    console.log(
-      "Install this tool in the plugins directory of RanvierMUD for greater ease of use."
-      .orange +
-      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD."
-      .green +
+    util.error(
+      "Install this tool in the plugins directory of RanvierMUD for greater ease of use." +
+      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD." +
       "\nYou may also need to manually add exits. :(\n"
-      .purple);
-    console.log(util.errmsg(err));
+    );
+    util.error(util.errmsg(err));
     saveDir = './areas/';
   }
   readAreaNames();
@@ -72,7 +69,7 @@ function storeAreaNames(err, files) {
 
 
 function logAreas() {
-  oldAreas.forEach((area) => { console.log("\n" + area.blue); });
+  oldAreas.forEach((area) => { util.debug("\n" + area); });
 }
 
 
@@ -164,14 +161,14 @@ function createRooms(vnum, amountOfRooms) {
     if (debug) logRoomLoop();
 
     function logRoomLoop() {
-      console.log("How many new rooms are there?");
-      console.log(newRooms.length);
-      console.log("How many do we need to make?");
-      console.log(amountOfRooms);
-      console.log("New rooms:");
-      console.log(newRooms);
-      console.log("Old rooms:");
-      console.log(oldRooms);
+      util.debug("How many new rooms are there?");
+      util.debug(newRooms.length);
+      util.debug("How many do we need to make?");
+      util.debug(amountOfRooms);
+      util.debug("New rooms:");
+      util.debug(newRooms);
+      util.debug("Old rooms:");
+      util.debug(oldRooms);
     }
 
     if (newRooms.length === amountOfRooms) {
@@ -194,7 +191,7 @@ function createExits() {
 
   function inquireAboutExits(room) {
     var exitMsg = "Creating exits for " + room.title.en + ":";
-    console.log(exitMsg.blue);
+    util.update(exitMsg);
     inquirer.prompt(
       exitQuestions,
       createExit(room));
@@ -223,7 +220,7 @@ function createExits() {
 
         exits.push(exit);
         room.exits.push(exit);
-        
+
         if (exitsToCreate--)
           inquireAboutExits(room);
         else inquireAboutExits(roomsCreated.shift());
@@ -240,7 +237,7 @@ function createExits() {
 */
 
 function saveArea(name, levels) {
-  console.log("Saving area manifest...".blue);
+  util.update("Saving area manifest...");
   area = name;
   saveDir = filters.filename(
     saveDir +
@@ -251,18 +248,18 @@ function saveArea(name, levels) {
   );
 
   fs.mkdir(saveDir, function handleMkDir(err) {
-    if (err) { console.error(err); }
+    if (err) { util.error(err); }
     saveToFile(areaManifest, true);
   });
 
-  console.log("Done!".blue);
+  util.update("Done!");
 }
 
 
 function saveRooms() {
-  console.log("Saving rooms...".blue);
+  util.update("Saving rooms...");
   newRooms.forEach(saveToFile);
-  console.log("Done!".blue);
+  util.update("Done!");
 }
 
 
@@ -281,5 +278,5 @@ function saveToFile(entity, isArea) {
 
 function handleSaveError(err) {
   if (!err) return;
-  console.error(util.errmsg(err));
+  util.error(util.errmsg(err));
 }
