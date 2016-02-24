@@ -1,12 +1,16 @@
 const gulp = require('gulp');
 const $ = require('gulp-load-plugins')();
 
+
 const options = {
   todo: {
     absolute: true
   },
-  jshint: {
-    reporter: 'default'
+  test: {
+    reporter: 'nyan',
+  },
+  lint: {
+    // reporter: 'default'
   },
 };
 
@@ -16,11 +20,17 @@ const paths = {
   js: ['./*.js', './**(!node_modules)/*.js'],
 };
 
-gulp.task('default', ['todo'], defaultTask);
+gulp.task('default', ['todo', 'test'], defaultTask);
 gulp.task('todo', toDoTask);
+gulp.task('test', testTask);
 
 function defaultTask() {
   console.log("GULP");
+}
+
+function testTask() {
+  gulp.src(paths.spec)
+    .pipe($.mocha(options.test));
 }
 
 function toDoTask() {

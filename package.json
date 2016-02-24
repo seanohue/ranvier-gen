@@ -13,6 +13,7 @@
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-load-plugins": "^1.2.0",
+    "gulp-mocha": "^2.2.0",
     "gulp-todo": "^4.1.0",
     "mocha": "^2.4.5"
   },
