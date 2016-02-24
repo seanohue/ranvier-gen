@@ -178,9 +178,6 @@ function createRooms(vnum, amountOfRooms) {
   }
 }
 
-//TODO: Add newly created rooms to list of destinations.
-//TODO: Check to make sure that the exits don't have the same destination
-
 function createExits() {
   var exitQuestions = [
     questions.exitDestination(oldRooms),
