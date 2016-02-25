@@ -1,6 +1,6 @@
 {
   "name": "ranvier-procgen",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A tool to procedurally generate YAML files for RanvierMUD entities.",
   "main": "index.js",
   "dependencies": {
