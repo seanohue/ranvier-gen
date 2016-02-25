@@ -12,21 +12,22 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "gulp-jshint": "^2.0.0",
     "gulp-load-plugins": "^1.2.0",
     "gulp-mocha": "^2.2.0",
     "gulp-todo": "^4.1.0",
+    "jshint": "^2.9.1",
     "mocha": "^2.4.5"
   },
   "scripts": {
     "test": "mocha ."
   },
   "keywords": [
-    "procedural",
     "generation",
+    "game development",
     "mud",
     "rpg",
-    "yaml",
-    "node"
+    "yaml"
   ],
   "author": "Sean O'Donohue",
   "license": "ISC"
