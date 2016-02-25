@@ -261,7 +261,7 @@ function saveRooms() {
 
 
 function saveToFile(entity, isArea) {
-  var name = isArea ? 'manifest' : entity.title.en;
+  var name = (isArea === true) ? 'manifest' : entity.title.en;
   var pathToSaveFile = filters.filename(saveDir +
     filters.noSpecialChars(name) + ".yml");
 
