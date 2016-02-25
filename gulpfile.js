@@ -21,7 +21,7 @@ const paths = {
 gulp.task('default', ['todo', 'test', 'lint'], defaultTask);
 gulp.task('todo', toDoTask);
 gulp.task('test', testTask);
-gulp.task('lint', lintTask)
+gulp.task('lint', lintTask);
 
 function defaultTask() {
   console.log("GULP");

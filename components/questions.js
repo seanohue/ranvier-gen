@@ -1,6 +1,6 @@
 const moduleDir = './';
 const validators = require(moduleDir + 'validators.js');
-const filters = require(moduleDir + 'filters.js')
+const filters = require(moduleDir + 'filters.js');
 const templates = require(moduleDir + 'templates.js');
 const util =  require(moduleDir + 'util.js');
 
@@ -82,9 +82,7 @@ module.exports.exitDestination = (rooms) => {
     message: 'Which other room will this exit connect to?',
     filter: filters.getRoomVnum
   };
-}
-
-util.getRoomLabels()
+};
 
 module.exports.exitLabel = (exits) => {
   return {

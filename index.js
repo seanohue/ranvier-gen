@@ -7,7 +7,7 @@ const fs = require('fs');
 // Custom modules
 const comp = './components/';
 const validators = require(comp + 'validators.js');
-const filters = require(comp + 'filters.js')
+const filters = require(comp + 'filters.js');
 const templates = require(comp + 'templates.js');
 const questions = require(comp + 'questions.js');
 const util = require(comp + 'util.js');
@@ -93,7 +93,7 @@ function loadOldRooms(areas, areaDir) {
         var roomPath = areaDir + '/' + file;
         var room = yaml.safeLoad(
           fs.readFileSync(roomPath,
-            'utf8'))
+            'utf8'));
         if (room)
           oldRooms.push(room);
       }
@@ -103,7 +103,7 @@ function loadOldRooms(areas, areaDir) {
 
 
 function isRoom(file) {
-  return file.indexOf('.yml') && file.indexOf('manifest') < 0
+  return file.indexOf('.yml') && file.indexOf('manifest') < 0;
 }
 
 // Begin the inquisition!
@@ -155,7 +155,7 @@ function createRooms(vnum, amountOfRooms) {
       vnum++,
       answers.desc,
       answers.numExits,
-      area)
+      area);
 
     newRooms.push(room);
     oldRooms.push(room);
@@ -213,8 +213,7 @@ function createExits() {
           leaveMessage: answers.leaveMessage
         };
 
-        exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) :
-          delete exit.leaveMessage;
+        exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) : delete exit.leaveMessage;
 
         exits.push(exit);
         room.exits.push(exit);
@@ -223,7 +222,7 @@ function createExits() {
           inquireAboutExits(room);
         else inquireAboutExits(roomsCreated.shift());
       } else saveRooms();
-    }
+    };
   }
 }
 

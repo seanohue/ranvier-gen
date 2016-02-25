@@ -1,3 +1,4 @@
+/*jshint -W030 */
 const should = require('chai').should();
 const validators = require('../components/validators.js');
 
@@ -7,7 +8,7 @@ describe('>>> validators:', () => {
 
     it('should return true if n is between the two numbers',
       () => {
-        validators.between(1, 7)(3).should.be.true
+        validators.between(1, 7)(3).should.be.true;
       });
 
     it('should return errmsg if n is NaN', () => {
