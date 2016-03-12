@@ -16,6 +16,7 @@ const Room = function roomConstructor( title, location, description, exits,
   this.location = location;
   this.description = filters.en( description );
   this.exits = exits;
+  this.area = area;
 };
 
 module.exports.AreaManifest = AreaManifest;
