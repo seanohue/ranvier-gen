@@ -45,8 +45,10 @@ function setupForPrompt( err ) {
       "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD." +
       "\nYou may also need to manually add exits. :(\n"
     );
+
     util.error( util.errmsg( err ) );
     saveDir = './areas/';
+
   }
   readAreaNames();
   askAboutArea();
@@ -59,7 +61,15 @@ function readAreaNames() {
 
 
 function storeAreaNames( err, files ) {
-  if ( err ) { util.errmsg( err ); }
+  if ( err ) {
+    util.errmsg( err );
+    if ( err.errno === -2 ) {
+      fs.mkdirSync( saveDir );
+      readAreaNames();
+      return;
+    }
+  }
+
   oldAreas = files.filter( ( file ) => {
     return file.indexOf( '.' ) === -1;
   } );
