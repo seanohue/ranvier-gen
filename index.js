@@ -14,7 +14,7 @@ const util = require( comp + 'util.js' );
 
 
 // State
-const debug = false;
+const debug = true;
 var areaManifest, area;
 var newRooms = [];
 var oldAreas = [];
@@ -189,7 +189,6 @@ function createRooms( vnum, amountOfRooms ) {
 }
 
 function createExits() {
-  var counter;
   var exitQuestions = [
     questions.exitDestination( oldRooms ),
     questions.exitLabel( exits ),
@@ -215,6 +214,13 @@ function createExits() {
       exitsToCreate = room.exits;
       room.exits = [];
       exits = [];
+    }
+
+    if ( debug ) {
+      util.debug( "Exits left: ",
+        exitsToCreate );
+      util.debug( "Exits so far: ", exits );
+      util.debug( "Rooms created: ", roomsCreated );
     }
 
     var progressMsg = "(" + ( newRooms.length ) + " rooms remaining)\n(" +

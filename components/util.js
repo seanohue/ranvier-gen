@@ -19,7 +19,7 @@ function _update( msg ) {
 }
 
 function _debug( msg ) {
-  console.log( chalk.white.blueBg( msg ) );
+  console.log( chalk.white.bgBlue( msg ) );
 }
 
 function _getRoomLabels( rooms ) {
