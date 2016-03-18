@@ -74,7 +74,6 @@ module.exports.amountOfExits = {
 */
 
 module.exports.exitDestination = ( rooms ) => {
-  console.log( 'Rooms are ', rooms );
   return {
     type: 'list',
     choices: util.getRoomLabels( rooms ),
