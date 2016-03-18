@@ -189,6 +189,7 @@ function createRooms( vnum, amountOfRooms ) {
 }
 
 function createExits() {
+  var counter;
   var exitQuestions = [
     questions.exitDestination( oldRooms ),
     questions.exitLabel( exits ),
@@ -198,15 +199,16 @@ function createExits() {
   inquireAboutExits( newRooms.shift() );
 
   function inquireAboutExits( room ) {
+    var exitsToCreate;
     var exitMsg = "Creating exits for " + room.title.en + ":";
     util.update( exitMsg );
+
     inquirer.prompt(
       exitQuestions,
       createExit( room ) );
   }
 
   function createExit( room ) {
-    var exitsToCreate;
     var roomsCreated = newRooms;
 
     if ( !isNaN( room.exits ) ) {
@@ -214,6 +216,11 @@ function createExits() {
       room.exits = [];
       exits = [];
     }
+
+    var progressMsg = "(" + ( newRooms.length ) + " rooms remaining)\n(" +
+      exitsToCreate + " exits remaining)";
+    util.update( progressMsg );
+
 
     return ( answers ) => {
       if ( roomsCreated.length ) {
