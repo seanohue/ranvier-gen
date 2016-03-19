@@ -217,10 +217,12 @@ function createExits() {
     }
 
     if ( debug ) {
-      util.debug( "Exits left: ",
-        exitsToCreate );
-      util.debug( "Exits so far: ", exits );
-      util.debug( "Rooms created: ", roomsCreated );
+      util.debug( "Exits left: ");
+      util.debug( exitsToCreate );
+      util.debug( "Exits so far: " );
+      util.debug( exits );
+      util.debug( "Rooms created: " );
+      util.debug( roomsCreated );
     }
 
     var progressMsg = "(" + ( newRooms.length ) + " rooms remaining)\n(" +
@@ -229,7 +231,7 @@ function createExits() {
 
 
     return ( answers ) => {
-      if ( roomsCreated.length ) {
+      if ( roomsCreated.length && exitsToCreate) {
         var exit = {
           location: answers.destination,
           direction: answers.label,

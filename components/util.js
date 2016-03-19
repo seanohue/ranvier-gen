@@ -26,7 +26,7 @@ function _getRoomLabels( rooms ) {
   return function() {
     if ( rooms ) {
       rooms = _flatten( rooms );
-      return rooms.map( ( room ) => {
+      return rooms.map( room => {
         return room.title.en + ' (' + room.location + ')';
       } );
     }
