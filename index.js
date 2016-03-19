@@ -14,7 +14,7 @@ const util = require( comp + 'util.js' );
 
 
 // State
-const debug = true;
+const debug = false;
 var areaManifest, area;
 var newRooms = [];
 var oldAreas = [];
