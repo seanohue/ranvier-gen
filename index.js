@@ -210,6 +210,7 @@ function createExits() {
   function createExit( room ) {
     var roomsCreated = newRooms;
 
+
     if ( !isNaN( room.exits ) ) {
       exitsToCreate = room.exits;
       room.exits = [];
@@ -217,6 +218,7 @@ function createExits() {
     }
 
     if ( debug ) {
+      console.log( room );
       util.debug( "Exits left: " );
       util.debug( exitsToCreate );
       util.debug( "Exits so far: " );
@@ -231,7 +233,7 @@ function createExits() {
 
 
     return ( answers ) => {
-      if ( roomsCreated.length || exitsToCreate-- ) {
+      if ( exitsToCreate-- || roomsCreated.length ) {
         var exit = {
           location: answers.destination,
           direction: answers.label,
@@ -244,7 +246,7 @@ function createExits() {
         exits.push( exit );
         room.exits.push( exit );
 
-        if ( exitsToCreate )
+        if ( exitsToCreate ) 
           inquireAboutExits( room );
         else if ( roomsCreated.length )
           inquireAboutExits( roomsCreated.shift() );
