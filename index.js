@@ -217,7 +217,7 @@ function createExits() {
     }
 
     if ( debug ) {
-      util.debug( "Exits left: ");
+      util.debug( "Exits left: " );
       util.debug( exitsToCreate );
       util.debug( "Exits so far: " );
       util.debug( exits );
@@ -231,7 +231,7 @@ function createExits() {
 
 
     return ( answers ) => {
-      if ( roomsCreated.length && exitsToCreate) {
+      if ( roomsCreated.length || exitsToCreate-- ) {
         var exit = {
           location: answers.destination,
           direction: answers.label,
@@ -244,10 +244,12 @@ function createExits() {
         exits.push( exit );
         room.exits.push( exit );
 
-        if ( exitsToCreate-- )
+        if ( exitsToCreate )
           inquireAboutExits( room );
-        else inquireAboutExits( roomsCreated.shift() );
-      } else saveRooms();
+        else if ( roomsCreated.length )
+          inquireAboutExits( roomsCreated.shift() );
+      }
+      if ( !roomsCreated.length ) saveRooms();
     };
   }
 }
