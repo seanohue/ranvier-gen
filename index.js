@@ -140,8 +140,10 @@ function createArea( answers ) {
 
 function getStartingVnum() {
   if ( !oldRooms.length ) return 1;
-  var max = util.flatten( oldRooms ).reduce( ( prev, current ) => ( prev.location >
-    current.location ) ? prev : current );
+  var max = util
+    .flatten( oldRooms )
+    .reduce( ( prev, current ) => ( prev.location >
+      current.location ) ? prev : current );
   return max.location + 1;
 }
 
@@ -246,7 +248,7 @@ function createExits() {
         exits.push( exit );
         room.exits.push( exit );
 
-        if ( exitsToCreate ) 
+        if ( exitsToCreate )
           inquireAboutExits( room );
         else if ( roomsCreated.length )
           inquireAboutExits( roomsCreated.shift() );
