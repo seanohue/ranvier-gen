@@ -1,7 +1,6 @@
 const moduleDir = './';
 const validators = require( moduleDir + 'validators.js' );
 const filters = require( moduleDir + 'filters.js' );
-const templates = require( moduleDir + 'templates.js' );
 const util = require( moduleDir + 'util.js' );
 
 
@@ -65,7 +64,7 @@ module.exports.biome = {
   type: 'list',
   name: 'biome',
   message: 'What kind of weather will this room have?',
-  default: 'no',
+  default: 'indoors',
   choices: [ 'indoors', 'outdoors' ],
 };
 

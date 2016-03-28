@@ -8,7 +8,7 @@ const fs = require( 'fs' );
 const comp = './components/';
 const validators = require( comp + 'validators.js' );
 const filters = require( comp + 'filters.js' );
-const templates = require( comp + 'templates.js' );
+const schema = require( comp + 'schema.js' );
 const questions = require( comp + 'questions.js' );
 const util = require( comp + 'util.js' );
 
@@ -160,7 +160,7 @@ function createRooms( vnum, amountOfRooms ) {
 
 
   function addRoomToLists( answers ) {
-    var room = new templates.Room(
+    var room = new schema.Room(
       answers.title,
       vnum++,
       answers.desc,
@@ -257,7 +257,7 @@ function saveArea( name, levels ) {
   saveDir = filters.filename(
     saveDir +
     filters.noSpecialChars( area ) + '/' );
-  areaManifest = new templates.AreaManifest(
+  areaManifest = new schema.AreaManifest(
     name,
     levels
   );
