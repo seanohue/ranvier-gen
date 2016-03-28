@@ -8,7 +8,7 @@ const fs = require( 'fs' );
 const comp = './components/';
 const validators = require( comp + 'validators.js' );
 const filters = require( comp + 'filters.js' );
-const templates = require( comp + 'templates.js' );
+const schema = require( comp + 'schema.js' );
 const questions = require( comp + 'questions.js' );
 const util = require( comp + 'util.js' );
 
@@ -42,8 +42,8 @@ function setupForPrompt( err ) {
   if ( err ) {
     util.error(
       "Install this tool in the plugins directory of RanvierMUD for greater ease of use." +
-      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD." +
-      "\nYou may also need to manually add exits. :(\n"
+      "\n\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD." +
+      "\n\nYou may also need to manually add exits. :(\n"
     );
 
     util.error( util.errmsg( err ) );
@@ -73,7 +73,9 @@ function storeAreaNames( err, files ) {
   oldAreas = files.filter( ( file ) => {
     return file.indexOf( '.' ) === -1;
   } );
+
   if ( debug ) logAreas();
+
   findOldRooms();
 }
 
@@ -153,6 +155,9 @@ function createRooms( vnum, amountOfRooms ) {
   var roomQuestions = [
     questions.titleRoom,
     questions.describeRoom,
+    questions.biome,
+    questions.shortDesc,
+    questions.darkDesc,
     questions.amountOfExits,
   ];
 
@@ -162,10 +167,13 @@ function createRooms( vnum, amountOfRooms ) {
 
 
   function addRoomToLists( answers ) {
-    var room = new templates.Room(
+    var room = new schema.Room(
       answers.title,
       vnum++,
       answers.desc,
+      answers.shortDesc,
+      answers.darkDesc,
+      answers.biome,
       answers.numExits,
       area );
 
@@ -271,7 +279,7 @@ function saveArea( name, levels ) {
   saveDir = filters.filename(
     saveDir +
     filters.noSpecialChars( area ) + '/' );
-  areaManifest = new templates.AreaManifest(
+  areaManifest = new schema.AreaManifest(
     name,
     levels
   );

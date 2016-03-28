@@ -10,11 +10,24 @@ const AreaManifest = function areaConstructor( title, range ) {
   return area;
 };
 
-const Room = function roomConstructor( title, location, description, exits,
-  area ) {
+const Room = function roomConstructor(
+  title,
+  vnum, 
+  description,
+  shortDesc,
+  darkDesc,
+  biome,
+  exits,
+  area
+) {
   this.title = filters.en( title );
-  this.location = location;
+  this.location = vnum;
+
   this.description = filters.en( description );
+  this.short_desc = filters.en( shortDesc );
+  this.dark_desc = filters.en( darkDesc );
+
+  this.biome = biome;
   this.exits = exits;
   this.area = area;
 };

@@ -1,7 +1,6 @@
 const moduleDir = './';
 const validators = require( moduleDir + 'validators.js' );
 const filters = require( moduleDir + 'filters.js' );
-const templates = require( moduleDir + 'templates.js' );
 const util = require( moduleDir + 'util.js' );
 
 
@@ -57,6 +56,30 @@ module.exports.describeRoom = {
   name: 'desc',
   message: 'Describe the room:',
   default: 'A nice place to be.',
+  validate: validators.title,
+  filter: filters.stringify
+};
+
+module.exports.biome = {
+  type: 'list',
+  name: 'biome',
+  message: 'What kind of weather will this room have?',
+  default: 'indoors',
+  choices: [ 'indoors', 'outdoors' ],
+};
+
+module.exports.shortDesc = {
+  name: 'shortDesc',
+  message: 'A short description to be shown after the player\'s first visit:',
+  default: 'A nice place to be.',
+  validate: validators.title,
+  filter: filters.stringify
+};
+
+module.exports.darkDesc = {
+  name: 'darkDesc',
+  message: 'A description to be shown in poor light conditions:',
+  default: 'It is dark. You are likely to be eaten by a grue.',
   validate: validators.title,
   filter: filters.stringify
 };
