@@ -73,7 +73,9 @@ function storeAreaNames( err, files ) {
   oldAreas = files.filter( ( file ) => {
     return file.indexOf( '.' ) === -1;
   } );
+  
   if ( debug ) logAreas();
+  
   findOldRooms();
 }
 
@@ -151,6 +153,9 @@ function createRooms( vnum, amountOfRooms ) {
   var roomQuestions = [
     questions.titleRoom,
     questions.describeRoom,
+    questions.biome,
+    questions.shortDesc,
+    questions.darkDesc,
     questions.amountOfExits,
   ];
 
