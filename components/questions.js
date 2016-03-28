@@ -61,6 +61,30 @@ module.exports.describeRoom = {
   filter: filters.stringify
 };
 
+module.exports.biome = {
+  type: 'list',
+  name: 'biome',
+  message: 'What kind of weather will this room have?',
+  default: 'no',
+  choices: [ 'indoors', 'outdoors' ],
+};
+
+module.exports.shortDesc = {
+  name: 'shortdesc',
+  message: 'A short description to be shown after the player\'s first visit:',
+  default: 'A nice place to be.',
+  validate: validators.title,
+  filter: filters.stringify
+};
+
+module.exports.darkDesc = {
+  name: 'darkdesc',
+  message: 'A description to be shown in poor light conditions:',
+  default: 'It is dark. You are likely to be eaten by a grue.',
+  validate: validators.title,
+  filter: filters.stringify
+};
+
 module.exports.amountOfExits = {
   name: 'numExits',
   message: 'How many exits will this room have? Maximum of 6.',

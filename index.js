@@ -42,8 +42,8 @@ function setupForPrompt( err ) {
   if ( err ) {
     util.error(
       "Install this tool in the plugins directory of RanvierMUD for greater ease of use." +
-      "\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD." +
-      "\nYou may also need to manually add exits. :(\n"
+      "\n\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD." +
+      "\n\nYou may also need to manually add exits. :(\n"
     );
 
     util.error( util.errmsg( err ) );
