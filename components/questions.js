@@ -69,7 +69,7 @@ module.exports.biome = {
 };
 
 module.exports.shortDesc = {
-  name: 'shortdesc',
+  name: 'shortDesc',
   message: 'A short description to be shown after the player\'s first visit:',
   default: 'A nice place to be.',
   validate: validators.title,
@@ -77,7 +77,7 @@ module.exports.shortDesc = {
 };
 
 module.exports.darkDesc = {
-  name: 'darkdesc',
+  name: 'darkDesc',
   message: 'A description to be shown in poor light conditions:',
   default: 'It is dark. You are likely to be eaten by a grue.',
   validate: validators.title,
