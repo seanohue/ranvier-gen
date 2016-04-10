@@ -70,7 +70,7 @@ function storeAreaNames( err, files ) {
     }
   }
 
-  oldAreas = files.filter( ( file ) => {
+  oldAreas = files.filter( file => {
     return file.indexOf( '.' ) === -1;
   } );
 
@@ -81,7 +81,7 @@ function storeAreaNames( err, files ) {
 
 
 function logAreas() {
-  oldAreas.forEach( ( area ) => { util.debug( "\n" + area ); } );
+  oldAreas.forEach( area => { util.debug( "\n" + area ); } );
 }
 
 
@@ -182,6 +182,7 @@ function createRooms( vnum, amountOfRooms ) {
     if ( debug ) logRoomLoop();
 
     function logRoomLoop() {
+      util.debug( "Pushing ", room.title.en );
       util.debug( "How many new rooms are there?" );
       util.debug( newRooms.length );
       util.debug( "How many do we need to make?" );
@@ -242,7 +243,7 @@ function createExits() {
     util.update( progressMsg );
 
 
-    return ( answers ) => {
+    return answers => {
       if ( exitsToCreate-- || roomsCreated.length ) {
         var exit = {
           location: answers.destination,
@@ -322,6 +323,5 @@ function saveToFile( entity, isArea ) {
 
 
 function handleSaveError( err ) {
-  if ( !err ) return;
-  util.error( util.errmsg( err ) );
+  if ( err ) util.error( util.errmsg( err ) );
 }
