@@ -260,8 +260,8 @@ function createExits() {
           inquireAboutExits( room );
         else if ( roomsCreated.length ) {
           newRooms.push( room );
-          inquireAboutExits( roomsCreated.shift() );
           saveToFile( room );
+          inquireAboutExits( roomsCreated.shift() );
         }
       }
     };
