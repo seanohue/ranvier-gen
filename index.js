@@ -14,7 +14,7 @@ const util = require( comp + 'util.js' );
 
 
 // State
-const debug = false;
+const debug = true;
 var areaManifest, area;
 var newRooms = [];
 var oldAreas = [];
@@ -221,7 +221,6 @@ function createExits() {
   function createExit( room ) {
     var roomsCreated = newRooms;
 
-
     if ( !isNaN( room.exits ) ) {
       exitsToCreate = room.exits;
       room.exits = [];
@@ -244,7 +243,7 @@ function createExits() {
 
 
     return answers => {
-      if ( exitsToCreate-- || roomsCreated.length ) {
+      if ( exitsToCreate-- > 0 || roomsCreated.length ) {
         var exit = {
           location: answers.destination,
           direction: answers.label,
@@ -259,10 +258,12 @@ function createExits() {
 
         if ( exitsToCreate )
           inquireAboutExits( room );
-        else if ( roomsCreated.length )
+        else if ( roomsCreated.length ) {
+          newRooms.push( room );
           inquireAboutExits( roomsCreated.shift() );
+          saveToFile( room );
+        }
       }
-      if ( !roomsCreated.length ) saveRooms();
     };
   }
 }
@@ -304,12 +305,16 @@ function saveRooms() {
 function saveToFile( entity, isArea ) {
   var name;
 
+  if ( debug ) util.debug( entity );
+
   if ( isArea === true ) {
     name = 'manifest';
   } else {
     name = entity.title.en;
     entity = [ entity ];
   }
+
+  util.update( "Saving " + name );
 
   var pathToSaveFile = filters.filename( saveDir +
     filters.noSpecialChars( name ) + ".yml" );
