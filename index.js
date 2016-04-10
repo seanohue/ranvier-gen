@@ -241,9 +241,13 @@ function createExits() {
       exitsToCreate + " exits remaining)";
     util.update( progressMsg );
 
+    exitsToCreate--;
 
     return answers => {
-      if ( exitsToCreate-- > 0 || roomsCreated.length ) {
+      if ( exitsToCreate > 0 || roomsCreated.length ) {
+
+        console.log( exitsToCreate, roomsCreated.length );
+
         var exit = {
           location: answers.destination,
           direction: answers.label,
@@ -256,14 +260,15 @@ function createExits() {
         exits.push( exit );
         room.exits.push( exit );
 
-        if ( exitsToCreate )
+        if ( exitsToCreate > 0 )
           inquireAboutExits( room );
         else if ( roomsCreated.length ) {
+          console.log( "Noping on out to the next room." );
           newRooms.push( room );
           saveToFile( room );
           inquireAboutExits( roomsCreated.shift() );
         }
-      }
+      } else saveToFile( room );
     };
   }
 }
