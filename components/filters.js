@@ -6,8 +6,8 @@ module.exports.noSpecialChars = _noSpecialChars;
 module.exports.getRoomVnum = _getRoomVnum;
 
 function _getRoomVnum(room) {
-  var beginVnum = room.indexOf('(') + 1;
-  var endVnum = room.indexOf(')');
+  let beginVnum = room.indexOf('(') + 1;
+  let endVnum = room.indexOf(')');
   return Number(room.slice(beginVnum,
     endVnum));
 }

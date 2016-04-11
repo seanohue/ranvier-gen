@@ -3,7 +3,7 @@ const filters = require(moduleDir + 'filters.js');
 
 
 const AreaManifest = function areaConstructor(title, range) {
-  var area = {};
+  let area = {};
   area[title] = {};
   area[title].title = title;
   area[title].range = range;

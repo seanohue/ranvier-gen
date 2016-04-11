@@ -19,11 +19,11 @@ function _update(msg) {
 }
 
 function _debug(msg) {
-  console.log(chalk.white.bgBlue(msg));
+  console.log(chalk.white.bgBlue(msg), arguments[1] || '');
 }
 
 function _getRoomLabels(rooms) {
-  return function() {
+  return () => {
     if (rooms) {
       rooms = _flatten(rooms);
       return rooms.map(room => {
@@ -34,7 +34,7 @@ function _getRoomLabels(rooms) {
 }
 
 function _errmsg(err) {
-  var str = 'Error: ';
+  let str = 'Error: ';
 
   // if it's a libuv error then get the description from errno
   if (errno.errno[err.errno])
@@ -51,7 +51,7 @@ function _errmsg(err) {
 
 
 function _flatten(ary) {
-  var ret = [];
+  let ret = [];
   for (var i = 0; i < ary.length; i++) {
     if (Array.isArray(ary[i])) {
       ret = ret.concat(_flatten(ary[i]));

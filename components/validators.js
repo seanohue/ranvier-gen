@@ -7,7 +7,7 @@ module.exports.hasUnique = _hasUnique;
 
 function _between(min, max) {
   return function(n) {
-    var isPositive = _positiveInt(n);
+    let isPositive = _positiveInt(n);
     if (isPositive !== true) return isPositive;
     return (n >= min && n <= max) ? true :
       "Please provide a number between " +
@@ -27,7 +27,7 @@ function _title(title) {
 }
 
 function _hasUnique(key, collection, newLabel) {
-  return function(newLabel) {
+  return newLabel => {
     if (String(key) === key && collection) {
       newLabel = filters.stringify(newLabel);
       for (var item in collection) {
