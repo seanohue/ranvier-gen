@@ -1,7 +1,7 @@
 const moduleDir = './';
-const validators = require( moduleDir + 'validators.js' );
-const filters = require( moduleDir + 'filters.js' );
-const util = require( moduleDir + 'util.js' );
+const validators = require(moduleDir + 'validators.js');
+const filters = require(moduleDir + 'filters.js');
+const util = require(moduleDir + 'util.js');
 
 
 /*
@@ -20,7 +20,7 @@ module.exports.areaLevelMin = {
   name: "levelMin",
   message: "What is the lowest recommended player level for this area?",
   default: 1,
-  validate: validators.between( 1, 99 ),
+  validate: validators.between(1, 99),
   filter: filters.stringify
 };
 
@@ -28,7 +28,7 @@ module.exports.areaLevelMax = {
   name: "levelMax",
   message: "What is the highest recommended player level for this area?",
   default: 99,
-  validate: validators.between( 1, 99 ),
+  validate: validators.between(1, 99),
   filter: filters.stringify
 };
 
@@ -65,7 +65,7 @@ module.exports.biome = {
   name: 'biome',
   message: 'What kind of weather will this room have?',
   default: 'indoors',
-  choices: [ 'indoors', 'outdoors' ],
+  choices: ['indoors', 'outdoors'],
 };
 
 module.exports.shortDesc = {
@@ -88,7 +88,7 @@ module.exports.amountOfExits = {
   name: 'numExits',
   message: 'How many exits will this room have? Maximum of 6.',
   default: 1,
-  validate: validators.between( 1, 6 ),
+  validate: validators.between(1, 6),
   filter: Number
 };
 
@@ -96,22 +96,22 @@ module.exports.amountOfExits = {
 ///// Exit Questions
 */
 
-module.exports.exitDestination = ( rooms ) => {
+module.exports.exitDestination = (rooms) => {
   return {
     type: 'list',
-    choices: util.getRoomLabels( rooms ),
+    choices: util.getRoomLabels(rooms),
     name: 'destination',
     message: 'Which other room will this exit connect to?',
     filter: filters.getRoomVnum
   };
 };
 
-module.exports.exitLabel = ( exits ) => {
+module.exports.exitLabel = (exits) => {
   return {
     name: 'label',
     message: 'What command will the player type for this exit?',
     default: 'out',
-    validate: validators.hasUnique( 'direction', exits ),
+    validate: validators.hasUnique('direction', exits),
     filter: filters.stringify
   };
 };
