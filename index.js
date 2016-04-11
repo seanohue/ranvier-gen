@@ -206,13 +206,13 @@ function createExits() {
     questions.exitLabel( exits ),
     questions.leaveMessage
   ];
+  var exitsToCreate;
 
   inquireAboutExits( newRooms.shift() );
 
   function inquireAboutExits( room ) {
     console.log( "ENTERING inquire exits" );
 
-    var exitsToCreate;
     var exitMsg = "Creating exits for " + room.title.en + ":";
     util.update( exitMsg );
 
