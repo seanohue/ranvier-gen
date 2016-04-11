@@ -1,4 +1,5 @@
 /*jshint -W030 */
+'use strict';
 const should = require('chai').should();
 const validators = require('../components/validators.js');
 

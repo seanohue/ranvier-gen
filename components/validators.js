@@ -1,3 +1,4 @@
+'use strict';
 const filters = require('./filters.js');
 
 module.exports.positiveInt = _positiveInt;

@@ -1,3 +1,4 @@
+'use strict';
 module.exports.stringify = _stringify;
 module.exports.en = _en;
 module.exports.filename = _filename;

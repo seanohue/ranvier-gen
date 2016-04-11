@@ -1,3 +1,4 @@
+'use strict';
 const moduleDir = './';
 const filters = require(moduleDir + 'filters.js');
 

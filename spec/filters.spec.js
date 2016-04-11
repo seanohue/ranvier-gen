@@ -1,3 +1,4 @@
+'use strict';
 const should = require('chai').should();
 const filters = require('../components/filters.js');
 

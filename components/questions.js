@@ -1,3 +1,4 @@
+'use strict';
 const moduleDir = './';
 const validators = require(moduleDir + 'validators.js');
 const filters = require(moduleDir + 'filters.js');
