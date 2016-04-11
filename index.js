@@ -1,16 +1,17 @@
+'use strict';
 // NPM modules
-const inquirer = require( 'inquirer' );
-const yaml = require( 'js-yaml' );
-const fs = require( 'fs' );
+const inquirer = require('inquirer');
+const yaml = require('js-yaml');
+const fs = require('fs');
 
 
 // Custom modules
 const comp = './components/';
-const validators = require( comp + 'validators.js' );
-const filters = require( comp + 'filters.js' );
-const schema = require( comp + 'schema.js' );
-const questions = require( comp + 'questions.js' );
-const util = require( comp + 'util.js' );
+const validators = require(comp + 'validators.js');
+const filters = require(comp + 'filters.js');
+const schema = require(comp + 'schema.js');
+const questions = require(comp + 'questions.js');
+const util = require(comp + 'util.js');
 
 
 // State
@@ -28,25 +29,27 @@ init();
 
 function init() {
   checkInstallation();
-  console.log( '\033[2J' );
+  for (var i = 0; i < process.stdout.rows; ++i) {
+    console.log('\n');
+  }
 }
 
 // Filesystem business
 
 function checkInstallation() {
-  fs.access( saveDir, setupForPrompt );
+  fs.access(saveDir, setupForPrompt);
 }
 
 
-function setupForPrompt( err ) {
-  if ( err ) {
+function setupForPrompt(err) {
+  if (err) {
     util.error(
       "Install this tool in the plugins directory of RanvierMUD for greater ease of use." +
       "\n\nSince this tool is improperly installed, you still have to manually copy & paste the files into the entities/areas directory of RanvierMUD." +
       "\n\nYou may also need to manually add exits. :(\n"
     );
 
-    util.error( util.errmsg( err ) );
+    util.error(util.errmsg(err));
     saveDir = './areas/';
 
   }
@@ -56,66 +59,67 @@ function setupForPrompt( err ) {
 
 
 function readAreaNames() {
-  fs.readdir( saveDir, storeAreaNames );
+  fs.readdir(saveDir, storeAreaNames);
 }
 
 
-function storeAreaNames( err, files ) {
-  if ( err ) {
-    util.errmsg( err );
-    if ( err.errno === -2 ) {
-      fs.mkdirSync( saveDir );
+function storeAreaNames(err, files) {
+  if (err) {
+    util.errmsg(err);
+    if (err.errno === -2) {
+      fs.mkdirSync(saveDir);
       readAreaNames();
       return;
     }
   }
 
-  oldAreas = files.filter( file => {
-    return file.indexOf( '.' ) === -1;
-  } );
+  oldAreas = files.filter(file => {
+    return file.indexOf('.') === -1;
+  });
 
-  if ( debug ) logAreas();
+  if (debug) logAreas();
 
   findOldRooms();
 }
 
 
 function logAreas() {
-  oldAreas.forEach( area => { util.debug( "\n" + area ); } );
+  oldAreas.forEach(area => { util.debug("\n" + area); });
 }
 
 
 function findOldRooms() {
-  if ( oldAreas.length ) {
-    for ( var area in oldAreas ) {
-      var areaDir = saveDir + oldAreas[ area ];
-      if ( area ) {
-        var areas = fs.readdirSync( areaDir );
-        loadOldRooms( areas, areaDir );
+  if (oldAreas.length) {
+    for (var area in oldAreas) {
+      var areaDir = saveDir + oldAreas[area];
+      if (area) {
+        let areas = fs.readdirSync(areaDir);
+        loadOldRooms(areas, areaDir);
       }
     }
   }
 }
 
 
-function loadOldRooms( areas, areaDir ) {
-  if ( areas ) {
-    areas.forEach( ( file ) => {
-      if ( isRoom( file ) ) {
-        var roomPath = areaDir + '/' + file;
-        var room = yaml.safeLoad(
-          fs.readFileSync( roomPath,
-            'utf8' ) );
-        if ( room )
-          oldRooms.push( room );
+function loadOldRooms(areas, areaDir) {
+  if (areas) {
+    areas.forEach((file) => {
+      if (isRoom(file)) {
+        let roomPath = areaDir + '/' + file;
+        let room = yaml.safeLoad(
+          fs.readFileSync(
+            roomPath,
+            'utf8'));
+        if (room)
+          oldRooms.push(room);
       }
-    } );
+    });
   }
 }
 
 
-function isRoom( file ) {
-  return file.indexOf( '.yml' ) && file.indexOf( 'manifest' ) < 0;
+function isRoom(file) {
+  return file.indexOf('.yml') && file.indexOf('manifest') < 0;
 }
 
 // Begin the inquisition!
@@ -128,31 +132,31 @@ function askAboutArea() {
       questions.areaLevelMin,
       questions.areaLevelMax
     ],
-    createArea );
+    createArea);
 }
 
 
-function createArea( answers ) {
-  var suggestedLevels = answers.levelMin + '-' + answers.levelMax;
+function createArea(answers) {
+  let suggestedLevels = answers.levelMin + '-' + answers.levelMax;
 
-  saveArea( answers.areaName, suggestedLevels );
-  createRooms( null, answers.amount );
+  saveArea(answers.areaName, suggestedLevels);
+  createRooms(null, answers.amount);
 }
 
 
 function getStartingVnum() {
-  if ( !oldRooms.length ) return 1;
-  var max = util
-    .flatten( oldRooms )
-    .reduce( ( prev, current ) => ( prev.location >
-      current.location ) ? prev : current );
+  if (!oldRooms.length) return 1;
+  let max = util
+    .flatten(oldRooms)
+    .reduce((prev, current) => (prev.location >
+      current.location) ? prev : current);
   return max.location + 1;
 }
 
 
-function createRooms( vnum, amountOfRooms ) {
+function createRooms(vnum, amountOfRooms) {
   vnum = vnum || getStartingVnum();
-  var roomQuestions = [
+  const roomQuestions = [
     questions.titleRoom,
     questions.describeRoom,
     questions.biome,
@@ -163,11 +167,11 @@ function createRooms( vnum, amountOfRooms ) {
 
   inquirer.prompt(
     roomQuestions,
-    addRoomToLists );
+    addRoomToLists);
 
 
-  function addRoomToLists( answers ) {
-    var room = new schema.Room(
+  function addRoomToLists(answers) {
+    let room = new schema.Room(
       answers.title,
       vnum++,
       answers.desc,
@@ -175,105 +179,105 @@ function createRooms( vnum, amountOfRooms ) {
       answers.darkDesc,
       answers.biome,
       answers.numExits,
-      area );
+      area);
 
-    newRooms.push( room );
-    oldRooms.push( room );
-    if ( debug ) logRoomLoop();
+    newRooms.push(room);
+    oldRooms.push(room);
+    if (debug) logRoomLoop();
 
     function logRoomLoop() {
-      util.debug( "Pushing ", room.title.en );
-      util.debug( "How many new rooms are there?" );
-      util.debug( newRooms.length );
-      util.debug( "How many do we need to make?" );
-      util.debug( amountOfRooms );
-      util.debug( "New rooms:" );
-      util.debug( newRooms );
-      util.debug( "Old rooms:" );
-      util.debug( oldRooms );
+      util.debug("Pushing ", room.title.en);
+      util.debug("How many new rooms are there?");
+      util.debug(newRooms.length);
+      util.debug("How many do we need to make?");
+      util.debug(amountOfRooms);
+      util.debug("New rooms:");
+      util.debug(newRooms);
+      util.debug("Old rooms:");
+      util.debug(oldRooms);
     }
 
-    if ( newRooms.length === amountOfRooms ) {
+    if (newRooms.length === amountOfRooms) {
       createExits();
-    } else createRooms( vnum, amountOfRooms );
+    } else createRooms(vnum, amountOfRooms);
   }
 }
 
 function createExits() {
-  console.log( "ENTERING CREATEEXITS" );
-  var exitQuestions = [
-    questions.exitDestination( oldRooms ),
-    questions.exitLabel( exits ),
+  console.log("ENTERING CREATEEXITS");
+  const exitQuestions = [
+    questions.exitDestination(oldRooms),
+    questions.exitLabel(exits),
     questions.leaveMessage
   ];
-  var exitsToCreate;
+  let exitsToCreate;
 
-  inquireAboutExits( newRooms.shift() );
+  inquireAboutExits(newRooms.shift());
 
-  function inquireAboutExits( room ) {
-    console.log( "ENTERING inquire exits" );
+  function inquireAboutExits(room) {
+    console.log("ENTERING inquire exits");
 
     var exitMsg = "Creating exits for " + room.title.en + ":";
-    util.update( exitMsg );
+    util.update(exitMsg);
 
     inquirer.prompt(
       exitQuestions,
-      createExit( room ) );
+      createExit(room));
   }
 
-  function createExit( room ) {
-    console.log( "ENTERING create exit" );
+  function createExit(room) {
+    console.log("ENTERING create exit");
 
-    var roomsCreated = newRooms;
+    let roomsCreated = newRooms;
 
-    if ( !isNaN( room.exits ) ) {
+    if (!isNaN(room.exits)) {
       exitsToCreate = room.exits;
       room.exits = [];
       exits = [];
     }
 
-    if ( debug ) {
-      console.log( room );
-      util.debug( "Exits left: " );
-      util.debug( exitsToCreate );
-      util.debug( "Exits so far: " );
-      util.debug( exits );
-      util.debug( "Rooms created: " );
-      util.debug( roomsCreated );
+    if (debug) {
+      console.log(room);
+      util.debug("Exits left: ");
+      util.debug(exitsToCreate);
+      util.debug("Exits so far: ");
+      util.debug(exits);
+      util.debug("Rooms created: ");
+      util.debug(roomsCreated);
     }
 
-    var progressMsg = "(" + ( newRooms.length ) + " rooms remaining)\n(" +
+    var progressMsg = "(" + (newRooms.length) + " rooms remaining)\n(" +
       exitsToCreate + " exits remaining)";
-    util.update( progressMsg );
+    util.update(progressMsg);
 
     exitsToCreate--;
 
     return answers => {
-      if ( exitsToCreate > 0 ) {
+      if (exitsToCreate > 0) {
 
-        console.log( exitsToCreate, roomsCreated.length );
+        console.log(exitsToCreate, roomsCreated.length);
 
-        var exit = {
+        let exit = {
           location: answers.destination,
           direction: answers.label,
           leaveMessage: answers.leaveMessage
         };
 
-        exit.leaveMessage ? exit.leaveMessage = filters.en( exit.leaveMessage ) :
+        exit.leaveMessage ? exit.leaveMessage = filters.en(exit.leaveMessage) :
           delete exit.leaveMessage;
 
-        exits.push( exit );
-        room.exits.push( exit );
+        exits.push(exit);
+        room.exits.push(exit);
 
-        if ( exitsToCreate > 0 )
-          inquireAboutExits( room );
-        else if ( roomsCreated.length ) {
-          console.log( "Noping on out to the next room." );
-          newRooms.push( room );
-          saveToFile( room );
-          inquireAboutExits( roomsCreated.shift() );
+        if (exitsToCreate > 0)
+          inquireAboutExits(room);
+        else if (roomsCreated.length) {
+          console.log("Noping on out to the next room.");
+          newRooms.push(room);
+          saveToFile(room);
+          inquireAboutExits(roomsCreated.shift());
         }
-      } else saveToFile( room );
+      } else saveToFile(room);
     };
   }
 }
@@ -285,58 +289,58 @@ function createExits() {
 /////TODO: Extract into module, probably.
 */
 
-function saveArea( name, levels ) {
-  util.update( "Saving area manifest..." );
+function saveArea(name, levels) {
+  util.update("Saving area manifest...");
   area = name;
   saveDir = filters.filename(
     saveDir +
-    filters.noSpecialChars( area ) + '/' );
+    filters.noSpecialChars(area) + '/');
   areaManifest = new schema.AreaManifest(
     name,
     levels
   );
 
-  fs.mkdir( saveDir, function handleMkDir( err ) {
-    if ( err ) util.error( '\n' + util.errmsg( err ) );
-    saveToFile( areaManifest, true );
-  } );
+  fs.mkdir(saveDir, function handleMkDir(err) {
+    if (err) util.error('\n' + util.errmsg(err));
+    saveToFile(areaManifest, true);
+  });
 
-  util.update( "Done!" );
+  util.update("Done!");
 }
 
 
 function saveRooms() {
-  util.update( "Saving rooms..." );
-  newRooms.forEach( saveToFile );
-  util.update( "Done!" );
+  util.update("Saving rooms...");
+  newRooms.forEach(saveToFile);
+  util.update("Done!");
 }
 
 
-function saveToFile( entity, isArea ) {
-  var name;
+function saveToFile(entity, isArea) {
+  let name;
 
-  if ( debug ) util.debug( entity );
+  if (debug) util.debug(entity);
 
-  if ( isArea === true ) {
+  if (isArea === true) {
     name = 'manifest';
   } else {
     name = entity.title.en;
-    entity = [ entity ];
+    entity = [entity];
   }
 
-  util.update( "Saving " + name );
+  util.update("Saving " + name);
 
-  var pathToSaveFile = filters.filename( saveDir +
-    filters.noSpecialChars( name ) + ".yml" );
+  let pathToSaveFile = filters.filename(saveDir +
+    filters.noSpecialChars(name) + ".yml");
 
   fs.writeFile(
     pathToSaveFile,
-    yaml.safeDump( entity ),
+    yaml.safeDump(entity),
     handleSaveError
   );
 }
 
 
-function handleSaveError( err ) {
-  if ( err ) util.error( util.errmsg( err ) );
+function handleSaveError(err) {
+  if (err) util.error(util.errmsg(err));
 }
