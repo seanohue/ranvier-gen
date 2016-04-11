@@ -11,7 +11,7 @@ const validators = require(comp + 'validators.js');
 const filters = require(comp + 'filters.js');
 const schema = require(comp + 'schema.js');
 const questions = require(comp + 'questions.js');
-const util = require(comp + 'util.js');
+const util = require(comp + 'util.js'); //TODO: New name
 
 
 // State
@@ -268,7 +268,11 @@ function createExits() {
 
         exits.push(exit);
         room.exits.push(exit);
+        console.log(roomsCreated);
 
+        //FIXME: something fails here and it 
+        // is not creating the last room.
+        // See if adding 1 to check for .length fixed it?
         if (exitsToCreate > 0)
           inquireAboutExits(room);
         else if (roomsCreated.length) {
