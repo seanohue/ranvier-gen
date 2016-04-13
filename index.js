@@ -22,13 +22,18 @@ var oldAreas = [];
 var oldRooms = [];
 var exits = [];
 var saveDir = '../../entities/areas/';
+var roomsNeedingExits;
 var startingVnum;
 
 init();
 
 
 function init() {
+  clear();
   checkInstallation();
+}
+
+function clear() {
   for (var i = 0; i < process.stdout.rows; ++i) {
     console.log('\n');
   }
@@ -51,7 +56,6 @@ function setupForPrompt(err) {
 
     util.error(util.errmsg(err));
     saveDir = './areas/';
-
   }
   readAreaNames();
   askAboutArea();
@@ -229,6 +233,7 @@ function createExits() {
     console.log("ENTERING create exit");
 
     let roomsCreated = newRooms;
+    roomsNeedingExits = newRooms.length;
 
     if (!isNaN(room.exits)) {
       exitsToCreate = room.exits;
@@ -254,7 +259,6 @@ function createExits() {
 
     return answers => {
       if (exitsToCreate > 0) {
-
         console.log(exitsToCreate, roomsCreated.length);
 
         let exit = {
@@ -268,15 +272,15 @@ function createExits() {
 
         exits.push(exit);
         room.exits.push(exit);
-        console.log(roomsCreated);
 
         //FIXME: something fails here and it 
         // is not creating the last room.
         // See if adding 1 to check for .length fixed it?
-        if (exitsToCreate > 0)
+        //TODO: Consider getting rid of roomsCreated in favor of shifting rooms off of newRooms and saving them immediately.
+        if (exitsToCreate > 0) {
           inquireAboutExits(room);
-        else if (roomsCreated.length) {
-          console.log("Noping on out to the next room.");
+        } else if (roomsNeedingExits) {
+          roomsNeedingExits--;
           newRooms.push(room);
           saveToFile(room);
           inquireAboutExits(roomsCreated.shift());
