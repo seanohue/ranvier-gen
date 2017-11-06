@@ -1,3 +1,8 @@
+# deprecated
+
+I do plan on turning this into a usable CLI tool.
+Most likely it will be to procedurally generate areas, items, and NPCs for use with *RanvierMUD*.
+
 ### WHAT
 This is a command-line building tool for Ranvier MUD.
 
@@ -26,7 +31,8 @@ ranvier-gen uses [JS-YAML](https://github.com/nodeca/js-yaml) for parsing and [i
 
 ### Contribution
 
-This is still in beta form, at best. 
+This is still in beta form, at best.
+
 I use JS-beautify for code formatting since I'm lazy.
 The preferences for formatting are saved in the root of this project.
 This uses mocha.
